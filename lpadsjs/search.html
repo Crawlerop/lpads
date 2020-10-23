@@ -71,7 +71,8 @@
                 "With powerful search features, now, you can search ads for a places with unusual name! For example: Llanfairpwllgwyngyll (this place, while being the second longest in the world, may push LPAds to it's limits.)",
                 "You can now search by id. For example: locality.13899649970731870 or locality.13131003181470460 returns Waila!",
                 "Mapbox DC and Foursquare HQ were actually the headquarters for Mapbox and Foursquare respectively.",
-                "We have added support for GeoURI protocol. For example, type geo:35.335992,-79.038636 on search bar."
+                "We have added support for GeoURI protocol. For example, type geo:35.335992,-79.038636 on search bar.",
+                "You can now copy coordinates and geoURI to clipboard!"
             ]
 
             const urls = {
@@ -109,7 +110,7 @@
                             o = ""
                             rs = JSON.parse(this.responseText)
                             rs.features.forEach(function(feature){
-                                o += `<a href="mapads_marker.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`"">`+feature.place_name+` - `+feature.center[1]+`, `+feature.center[0]+`</a> - <a href="mapads_marker_cors.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`">CORS</a><br>`
+                                o += `<a href="mapads_marker.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`"">`+feature.place_name+` - `+feature.center[1]+`, `+feature.center[0]+`</a> - <a href="mapads_marker_cors.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`">CORS</a> - <button onclick="navigator.clipboard.writeText('`+feature.center[1]+", "+feature.center[0]+`')">Copy Coords</button> - <button onclick="navigator.clipboard.writeText('geo:`+feature.center[1]+","+feature.center[0]+`')">Copy geoURI</button><br>`
                             })
                             res.innerHTML = o
                             //console.log(res.innerHTML)
