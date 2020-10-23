@@ -8,6 +8,16 @@ In Google Maps, square pins are typically adverts.
 Advertisers pay Google to promote these locations.  
 Without this feature, the project wouldn't exist.
 
+They have 2 types of ads:
+
+![WithPromo](https://raw.githubusercontent.com/crawlerop/lpads/main/adspromo.png)
+
+With Promo
+
+![NoPromo](https://raw.githubusercontent.com/crawlerop/lpads/main/adsnopromo.png)
+
+Without Promo
+
 Purpose             |  Example Command
 :------------------:|:----------------------------------------------------------------------------------------------:
 Parse location ads  |  python3 locadsparser.py example.json
