@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <title>MapAds search</title>
+    </head>
+    <body>
+        <div id="searchtop">
+            <form action="" id="searchbar">
+                <label for="search" id="search1">Search for:</label>
+                <input type="text" id="search2" name="search">
+                <select id="search4" name="types">
+                    <option value="default">Default</option>
+                    <option value="single">Single</option>
+                    <option value="country">Country</option>
+                    <option value="region">Region</option>
+                    <option value="postcode">Postcode</option>
+                    <option value="district">District</option>
+                    <option value="place">Place</option>
+                    <option value="locality">Locality</option>
+                    <option value="neighborhood">Neighborhood</option>
+                    <option value="address">Address</option>
+                    <option value="poi">Point of Interest</option>
+                </select>
+                <input type="checkbox" id="search5" value="exact">
+                <label for="exact" id="search6">Exact Matching</label>
+                <button type="button" id="search3">Search</button>
+            </form>
+            <style>
+                body {
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: larger;
+                }
+            </style>
+        </div>
+        <div id="tip"></div>
+        <br>
+        <div id="results"></div>
+        <script>
+            var xhr = new XMLHttpRequest()
+            var res = document.getElementById("results")
+
+            const tips = [
+                "Search for NYC",
+                "Dock in Search",
+                "Find India!",
+                "\"City Of\" <i><b>only</b></i> in search should have many cities!",
+                "We have added many options to the search page!",
+                "With single mode, you can reverse geocode for example: 116,-32",
+                "There is Four Corners while in POI mode!",
+                "ADL on Search!",
+                "Type Colorado. You won't be mistaken!",
+                "Are Mount Everest exist on the search page?",
+                "13 Powell Crescent is a name on many localities!",
+                "Quetzi lives in Bury, so does the search!",
+                "Using 1 York Merredin as a search text, 4 towns in the Wheatbelt area appears, including the road end location!",
+                "Main roads like Heal Street are applied besides ADG! like: the street name applied in a suburb of the 3th largest city in AU!",
+                "This search is not powered with YotaLibrary!",
+                "Wanna go for flight? Go for JFK!",
+                "Great Barrier Reef should have located in the <b><i>Whitsunday</i></b> region!",
+                "Are phosphors were made by <i>Proserpine</i>?",
+                "This app is not made by Yoting!",
+                "What is VTR, It is located in Piscataway!",
+                "Are Story Bridge were made in Iowa?",
+                "Speaking of Nelson Mandela, find Soweto on the search!",
+                "So much stuffs in <i><b>Leeming!</b></i>",
+                "One town is a capital for a district, but not a capital for a county. Like the <i><b>Royal Leamington Spa</b></i>.",
+                "In MA, Somerville is not where East Cambridge was located!",
+                "There's many names that starts with Prospect. Try adding NS or S to make it look more specific!",
+                "Since Waila doesn't have an ads, type Why to get more ads!"
+            ]
+
+            const urls = {
+                "single": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1",
+                "default": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000",
+                "country": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000&types=country",
+                "region": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000&types=region",
+                "postcode": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000&types=postcode",
+                "district": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000&types=district",
+                "place": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000&types=place",
+                "locality": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000&types=locality",
+                "neighborhood": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000&types=neighborhood",
+                "address": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000&types=address",
+                "poi": "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1000&types=poi",
+            }
+
+            document.getElementById("tip").innerHTML = "<b>Tip: </b>" + tips[Math.floor(Math.random() * tips.length)]
+
+            setInterval(function(){
+                document.getElementById("tip").innerHTML = "<b>Tip: </b>" + tips[Math.floor(Math.random() * tips.length)]
+            }, 5000)
+
+            document.getElementById("search3").onclick = function() {
+                xhr.open("GET",urls[document.getElementById("search4").value].replace("(query)", document.getElementById("search2").value) + (document.getElementById("search5").checked ? "&fuzzyMatch=false" : ""))
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        o = ""
+                        rs = JSON.parse(this.responseText)
+                        rs.features.forEach(function(feature){
+                            o += `<a href="mapads_marker.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`"">`+feature.place_name+` - `+feature.center[1]+`, `+feature.center[0]+`</a> - <a href="mapads_marker_cors.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`">CORS</a><br>`
+                        })
+                        res.innerHTML = o
+                        //console.log(res.innerHTML)
+                    }
+                }
+                xhr.send()
+                res.innerHTML = ""
+            }
+
+            window.addEventListener('keydown', function(e) {
+                if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
+                    if (e.target.nodeName == 'INPUT' && e.target.type == 'text') {
+                        e.preventDefault()
+                        document.getElementById("search3").onclick()
+                        return false
+                    }
+                }
+            }, true)
+        </script>
+    </body>
+</html>
