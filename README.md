@@ -24,4 +24,4 @@ We also ported LPAds to JavaScript! To include in your site, add in your html fi
 ```
 <script src="https://raw.githubusercontent.com/Crawlerop/lpads/main/lpadsjs/mapads.js" crossorigin=""></script>
 ```
-If you want the examples, please click [here](https://crawlerop.github.io/lpads/mapads_marker.html)
+If you want the examples, please click [here](https://crawlerop.github.io/lpads/lpadsjs/mapads_marker.html)
