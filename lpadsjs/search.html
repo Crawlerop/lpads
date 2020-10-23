@@ -94,19 +94,21 @@
             }, 5000)
 
             document.getElementById("search3").onclick = function() {
-                xhr.open("GET",urls[document.getElementById("search4").value].replace("(query)", document.getElementById("search2").value) + (document.getElementById("search5").checked ? "&fuzzyMatch=false" : ""))
-                xhr.onreadystatechange = function() {
-                    if (this.readyState == 4) {
-                        o = ""
-                        rs = JSON.parse(this.responseText)
-                        rs.features.forEach(function(feature){
-                            o += `<a href="mapads_marker.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`"">`+feature.place_name+` - `+feature.center[1]+`, `+feature.center[0]+`</a> - <a href="mapads_marker_cors.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`">CORS</a><br>`
-                        })
-                        res.innerHTML = o
-                        //console.log(res.innerHTML)
+                if (document.getElementById("search2").value != "") { 
+                    xhr.open("GET",urls[document.getElementById("search4").value].replace("(query)", document.getElementById("search2").value) + (document.getElementById("search5").checked ? "&fuzzyMatch=false" : ""))
+                    xhr.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status <= 399) {
+                            o = ""
+                            rs = JSON.parse(this.responseText)
+                            rs.features.forEach(function(feature){
+                                o += `<a href="mapads_marker.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`"">`+feature.place_name+` - `+feature.center[1]+`, `+feature.center[0]+`</a> - <a href="mapads_marker_cors.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`">CORS</a><br>`
+                            })
+                            res.innerHTML = o
+                            //console.log(res.innerHTML)
+                        }
                     }
+                    xhr.send()
                 }
-                xhr.send()
                 res.innerHTML = ""
             }
 
