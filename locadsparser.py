@@ -35,12 +35,13 @@ def main():
         print(f"Ad Location: {mapa.get('adLocation')}")
         print(f"Ad Link: {mapa.get('adLink')}")
         print(f"Ad Site: {mapa.get('adSite')}")
+        print(f"Ad WTA: {mapa.get('adWhy')}")
         if mapa.get('promoData'):
             print(f"Have Promo: yes")
         else:
             print(f"Have Promo: no")
 
-    open("dump_d", "w", encoding="utf-8").write(json.dumps(mapad.mapads))
+    # open("dump_d", "w", encoding="utf-8").write(json.dumps(mapad.mapads))
     
     
 

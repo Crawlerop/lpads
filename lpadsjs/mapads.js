@@ -14,6 +14,7 @@ var MAPAD_ADCLICK = MAPAD_ADNAME
 var MAPAD_ADSITE = MAPAD_ADDATA_BASESITE
 var MAPAD_ADSITE_BASESITE = MAPAD_ADLL
 var MAPAD_ADSITE_WTA = MAPAD_ADNAME
+var MAPAD_ADSITE_WTAARRAY = MAPAD_ADLOCATIONLNG
 
 function parseAds(mapad) {
     var ret = {"noAds": false, "mapAds": null}
@@ -25,7 +26,8 @@ function parseAds(mapad) {
             adLocData = [ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLAT].toString(), ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLNG].toString()]
             adUrlLink = ldata[MAPAD_ADLINKS][MAPAD_ADCLICK]
             adBaseSite = ldata[MAPAD_ADSITE][MAPAD_ADSITE_BASESITE]
-            adWta = ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTA]
+            adWtaP = ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTA]
+            adWta = adWtaP + ". " + ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTAARRAY].join(" ")
             adData = null
             if (ldata[MAPAD_ADDATA] != null) {
                 adImg = ldata[MAPAD_ADDATA][MAPAD_ADDATA_IMAGE]

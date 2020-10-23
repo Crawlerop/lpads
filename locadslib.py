@@ -20,6 +20,7 @@ MAPAD_ADCLICK = MAPAD_ADNAME
 MAPAD_ADSITE = MAPAD_ADDATA_BASESITE
 MAPAD_ADSITE_BASESITE = MAPAD_ADLL
 MAPAD_ADSITE_WTA = MAPAD_ADNAME
+MAPAD_ADSITE_WTAARRAY = MAPAD_ADLOCATIONLNG
 
 class MapAds():
     def __init__(self, mapad: list):
@@ -34,7 +35,12 @@ class MapAds():
                 adlocdata = (str(ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLAT]), str(ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLNG]))
                 adurllink = ldata[MAPAD_ADLINKS][MAPAD_ADCLICK]
                 adbasesite = ldata[MAPAD_ADSITE][MAPAD_ADSITE_BASESITE]
-                adwta = ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTA]
+                adwtap = ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTA]
+                adwta = adwtap + ". "
+                adwtaterms = []
+                for ls in ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTAARRAY]:
+                    adwtaterms.append(ls[0])
+                adwta +=  " ".join(adwtaterms)
                 addata = None
 
                 if ldata[MAPAD_ADDATA]:
