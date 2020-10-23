@@ -24,4 +24,8 @@ We also ported LPAds to JavaScript! To include in your site, add in your html fi
 ```
 <script src="https://raw.githubusercontent.com/Crawlerop/lpads/main/lpadsjs/mapads.js" crossorigin=""></script>
 ```
-If you want the examples, please click [here](https://crawlerop.github.io/lpads/lpadsjs/mapads_marker.html)
+If you want the examples, please click [here](https://crawlerop.github.io/lpads/lpadsjs/mapads_marker.html?localads=true)
+
+## Tracking
+Locational ads depends on your interests. So ads may very on different account you are using.  
+You can opt out these ads by visiting [adssettings.google.com](https://adssettings.google.com).
