@@ -12,7 +12,7 @@ Find ads for location, using proxy | python3 locadsgetter.py 40.7127837 -74.0059
 
 ## LPAds command-line arguments
 Argument           |  Purpose
-:-----------------:|:----------------------------------------------------------:
+:-----------------:|:----------------------------------------------------------:s
 outp               | Change output file/folder
 noadsfail          | Fail when no ads found
 proxy              | Enabling use of proxies
