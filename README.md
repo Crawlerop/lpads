@@ -1,7 +1,7 @@
 # lpads
 ![title](https://raw.githubusercontent.com/crawlerop/lpads/main/lpads.png)
 
-Many tools to work with Google Maps Location Ads.
+Many tools to work with Google Maps Location Ads (Norries not included.)
 
 Purpose             |  Example Command
 :------------------:|:----------------------------------------------------------------------------------------------:
