@@ -1,7 +1,12 @@
 # lpads
 ![title](https://raw.githubusercontent.com/crawlerop/lpads/main/lpads.png)
 
-Many tools to work with Google Maps Location Ads (Norries not included.)
+Many tools to work with Google Maps [Location Ads](https://support.google.com/maps/answer/9947218) (Norries not included.)
+
+## How it works
+In Google Maps, square pins are typically adverts.  
+Advertisers pay Google to promote these locations.  
+Without this feature, the project wouldn't exist.
 
 Purpose             |  Example Command
 :------------------:|:----------------------------------------------------------------------------------------------:
