@@ -70,7 +70,8 @@
                 "<i>\"walt di\"</i> should show the results of a theme park!",
                 "With powerful search features, now, you can search ads for a places with unusual name! For example: Llanfairpwllgwyngyll (this place, while being the second longest in the world, may push LPAds to it's limits.)",
                 "You can now search by id. For example: locality.13899649970731870 or locality.13131003181470460 returns Waila!",
-                "Mapbox DC and Foursquare HQ were actually the headquarters for Mapbox and Foursquare respectively."
+                "Mapbox DC and Foursquare HQ were actually the headquarters for Mapbox and Foursquare respectively.",
+                "We have added support for GeoURI protocol. For example, type geo:35.335992,-79.038636 on search bar."
             ]
 
             const urls = {
@@ -95,7 +96,14 @@
 
             document.getElementById("search3").onclick = function() {
                 if (document.getElementById("search2").value != "") { 
-                    xhr.open("GET",urls[document.getElementById("search4").value].replace("(query)", document.getElementById("search2").value) + (document.getElementById("search5").checked ? "&fuzzyMatch=false" : ""))
+                    if (document.getElementById("search2").value.startsWith("geo:")) { // geo:35.335992,-79.038636
+                        lval = document.getElementById("search2").value
+                        lpos = lval.split(":")[1]
+                        ll = lpos.split(",")
+                        xhr.open("GET",urls[document.getElementById("search4").value].replace("(query)", ll[1]+","+ll[0]) + (document.getElementById("search5").checked ? "&fuzzyMatch=false" : ""))
+                    } else {
+                        xhr.open("GET",urls[document.getElementById("search4").value].replace("(query)", document.getElementById("search2").value) + (document.getElementById("search5").checked ? "&fuzzyMatch=false" : ""))
+                    }
                     xhr.onreadystatechange = function() {
                         if (this.readyState == 4 && this.status <= 399) {
                             o = ""
