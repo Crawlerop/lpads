@@ -356,9 +356,9 @@ def main():
                     lt = 0
                 print(f"Index {si}: Searching ads for {qust['answer']['title']} - {qust['title']} in {lat}, {lng}... [{loadani_chars[lt]}] {retries} tries", end="\r")
             if PROXY_SITE:
-                hapi = httpapi.get(f"https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d1!2d{lng}!3d{lat}!2m0!3m2!1i4096!2i2048!4f14!5m2!3b0!5e11", timeout=htimeout, proxies={"http":PROXY_SITE,"https":PROXY_SITE})
+                hapi = httpapi.get(f"https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d1!2d{lng}!3d{lat}!2m0!3m2!1i32767!2i32767!4f14!5m2!3b0!5e11", timeout=htimeout, proxies={"http":PROXY_SITE,"https":PROXY_SITE})
             else:
-                hapi = httpapi.get(f"https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d1!2d{lng}!3d{lat}!2m0!3m2!1i4096!2i2048!4f14!5m2!3b0!5e11", timeout=htimeout)
+                hapi = httpapi.get(f"https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d1!2d{lng}!3d{lat}!2m0!3m2!1i32767!2i32767!4f14!5m2!3b0!5e11", timeout=htimeout)
             hapi.raise_for_status()
             
             o = hapi.content.decode("utf-8").replace(")]}'\n","")
