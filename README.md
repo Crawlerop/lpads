@@ -3,6 +3,8 @@
 
 Many tools to work with Google Maps [Location Ads](https://support.google.com/maps/answer/9947218) (Norries not included.)
 
+Maps PassiveAssist tools were now available. Click [here](https://github.com/crawlerop/psassist)
+
 ## How it works
 In Google Maps, square pins are typically adverts.  
 Advertisers pay Google to promote these locations.  
