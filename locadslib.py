@@ -1,12 +1,11 @@
 '''
 Library for parsing GMaps Location ads
-
-There is a format which contains composite map pinlet?
 '''
 
 MAPAD_ADLIST = 0
 MAPAD_ADNAME = 1
 MAPAD_ADLOCATION = 2
+MAPAD_ADLOCATION_PINLET = MAPAD_ADNAME
 MAPAD_ADLOCATIONLAT = MAPAD_ADLOCATION
 MAPAD_ADLOCATIONLNG = 3
 MAPAD_ADDATA = MAPAD_ADLOCATIONLNG
@@ -36,6 +35,10 @@ class MapAds():
                 adurllink = ldata[MAPAD_ADLINKS][MAPAD_ADCLICK]
                 adbasesite = ldata[MAPAD_ADSITE][MAPAD_ADSITE_BASESITE]
                 adwtap = ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTA]
+                if len(ldata[MAPAD_ADLOCATION]) > 1:
+                    adpinlet = ldata[MAPAD_ADLOCATION][MAPAD_ADLOCATION_PINLET]
+                else:
+                    adpinlet = None
                 adwta = adwtap + ". "
                 adwtaterms = []
                 for ls in ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTAARRAY]:
@@ -51,7 +54,7 @@ class MapAds():
                     addata = {"adImage": adimg, "adPromo": adpromolyr}
 
 
-                self.mapads.append({"adName":adname,"adLocation":", ".join(adlocdata),"adLink":adurllink,"adSite":adbasesite,"adWhy":adwta,"promoData":addata})
+                self.mapads.append({"adName":adname,"adLocation":", ".join(adlocdata),"adLink":adurllink,"adSite":adbasesite,"adWhy":adwta,"promoData":addata,"adPinImage":adpinlet})
 
         else:
             self.noads = True

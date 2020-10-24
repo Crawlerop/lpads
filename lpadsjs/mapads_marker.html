@@ -254,6 +254,16 @@
                 function loadPins(adData) {
                     adData.forEach(function(ad) {
                         m = L.marker(ad.adLocation.split(", "), {title: ad.adName})
+                        if (ad.adPinImage != null) {
+                            m = L.marker(ad.adLocation.split(", "), {
+                                title: ad.adName,
+                                icon: L.icon({
+                                    iconUrl: ad.adPinImage,
+                                    iconSize: [24,24]
+                                })
+                            })
+
+                        }
                         adTextData = "<h1>"+ad.adName+"</h1>"
                         lp = ad.adLocation.split(", ")
                         tg = searchAPIURL.replace("(query)", lp[1] + "," + lp[0])
@@ -271,31 +281,14 @@
                         }
                                     
                         pins.push(m)
-                        
                         xhr2.open("GET", tg, false)
-                        
                         xhr2.send()
 
                         adTextData = adTextData.replace("(LocationName)", JSON.parse(xhr2.responseText).features[0].place_name)
                         m.bindPopup(adTextData)
                         m.addTo(data)
                         
-                        /*
-                        fetch(tg).then(response => {
-                            s = response.json().then(function (j){
-                                adTextData = adTextData.replace("(LocationName)", j.features[0].place_name)
-                                m.bindPopup(adTextData)
-                                m.addTo(data)
-                            })
-                        }).catch(error => {
-                            //console.log(error)
-                            adTextData = adTextData.replace("(LocationName)", "Unknown")
-                            m.bindPopup(adTextData)
-                            m.addTo(data)
-                        })
-                        */    
                     })
-                    
                 }
 
                 var adData = null;

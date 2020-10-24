@@ -357,6 +357,7 @@ def main():
         print(f"Ad Link: {mapa.get('adLink')}")
         print(f"Ad Site: {mapa.get('adSite')}")
         print(f"Ad WTA: {mapa.get('adWhy')}")
+        print(f"Ad Pinlet {mapa.get('adPinImage')}")
         if mapa.get('promoData'):
             print(f"Have Promo: yes")
         else:

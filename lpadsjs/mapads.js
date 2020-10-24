@@ -1,6 +1,7 @@
 var MAPAD_ADLIST = 0
 var MAPAD_ADNAME = 1
 var MAPAD_ADLOCATION = 2
+var MAPAD_ADLOCATION_PINLET = MAPAD_ADNAME
 var MAPAD_ADLOCATIONLAT = MAPAD_ADLOCATION
 var MAPAD_ADLOCATIONLNG = 3
 var MAPAD_ADDATA = MAPAD_ADLOCATIONLNG
@@ -28,6 +29,7 @@ function parseAds(mapad) {
             adBaseSite = ldata[MAPAD_ADSITE][MAPAD_ADSITE_BASESITE]
             adWtaP = ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTA]
             adWta = adWtaP + ". " + ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTAARRAY].join(" ")
+            adPinlet = ldata[MAPAD_ADLOCATION][MAPAD_ADLOCATION_PINLET]
             adData = null
             if (ldata[MAPAD_ADDATA] != null) {
                 adImg = ldata[MAPAD_ADDATA][MAPAD_ADDATA_IMAGE]
@@ -36,7 +38,7 @@ function parseAds(mapad) {
                 adPromolyr = {"promoTitle": adPromoTxt[0], "promoDesc": adPromoTxt[1], "promoButton": adPromoTxt[2]}
                 adData = {"adImage": adImg, "adPromo": adPromolyr}
             }
-            ret.mapAds.push({"adName":adName,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData})
+            ret.mapAds.push({"adName":adName,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet})
         })
     } else {
         ret.noAds = true
