@@ -39,6 +39,7 @@
         <body>
             <div id="mapid"></div>
             <script>
+                var searching = false;
                 var xhr = new XMLHttpRequest()
                 var xhr2 = new XMLHttpRequest()
                 var start = [40.7127837, -74.00594130000002]
@@ -308,6 +309,7 @@
                     if (going == true) {
                         xhr.abort()
                         going = false
+                        searching = false
                     } 
                     pins.forEach(function(k){
                         k.remove()
@@ -348,6 +350,7 @@
                     if (going == true) {
                         xhr.abort()
                         going = false
+                        searching = false
                     } 
                     pins.forEach(function(k){
                         k.remove()
@@ -400,6 +403,52 @@
                 }
                 going = true
                 xhr.send()
+
+                function dosearch() {
+                    if (searching == true && going == true) {
+                        xhr.abort()
+                        going = false
+                        searching = false
+                        return
+                    }
+                    if (going == true) {
+                        xhr.abort()
+                        going = false
+                        searching = false
+                    } 
+                    searching = true
+                    pins.forEach(function(k){
+                        k.remove()
+                    }); 
+                    pins = []
+                    pos = adMarker.getLatLng()
+                    xhr.open("GET", "https://api.allorigins.win/raw?url="+encodeURIComponent("https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d1!2d"+pos.lng+"!3d"+pos.lat+"!2m0!3m2!1i4096!2i2048!4f14!5m2!3b0!5e11"))
+                    xhr.onreadystatechange = function() {
+                        if (this.readyState == 4) {
+                            going = false
+                            out = xhr.responseText.replace(")]}'\n", "")
+                            //console.log(out)
+                            try {
+                                adProto = JSON.parse(out)
+                            } catch (e) {
+                                return
+                            }
+                            adResp = parseAds(adProto)
+                            if (adResp.noAds == true) {
+                                console.warn("No ads found on "+pos.lat+", "+pos.lng+"!")
+                                if (searching) {dosearch()}
+                            } else {
+                                searching = false
+                                adData = adResp.mapAds
+                                loadPins(adData)
+                            }
+                        }
+                    }
+                    going = true
+                    xhr.send()
+                }
+
+                L.easyButton('fa-map-marker', dosearch).addTo(mymap)
 
                 //console.log(addLayer)
             </script>
