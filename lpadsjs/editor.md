@@ -28,4 +28,6 @@
   <br>
 </form>
 </div>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@latest/dist/leaflet.js" crossorigin=""></script>
 <script src="editormain.js"></script>
