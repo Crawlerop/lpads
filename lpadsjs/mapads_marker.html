@@ -48,6 +48,7 @@
                 var cors = false;
                 var searchAPIURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1";
                 var lpadURL = "https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d(dist)!2d(long)!3d(lat)!2m0!3m2!1i32767!2i32767!4f14!5m2!3b0!5e11"
+                var overrides = null;
 
                 function selLPUrl(uri) {
                     return cors ? uri : "https://api.allorigins.win/raw?url=" + encodeURIComponent(uri)
@@ -66,6 +67,9 @@
                     }
                     if (up.get('localads') == "true") {
                         addLayer = true
+                    }
+                    if (up.get('override') != null) {
+                        overrides = JSON.parse(window.atob(up.get('override'))).overrides
                     }
                 } catch (e) {
 
@@ -238,6 +242,10 @@
                     document.location = "search.html"
                 }).addTo(mymap)
 
+                L.easyButton('fa-pencil', function(){
+                    document.location = "editor.html?lat="+start[0]+"&lng="+start[1]
+                })
+
                 if (addLayer == true) {
                     mymap.addLayer(data)
                 }
@@ -269,6 +277,16 @@
 
                 function loadPins(adData) {
                     adData.forEach(function(ad) {
+                        var atwn = null
+                        if (overrides != null) {
+                            overrides.forEach(function(v){
+                                if (ad.adName == v.target.adName && (v.target.adLocation == "*" || ad.adLocation == v.target.adLocation) && (v.target.adSite == "*" || ad.adSite == v.target.adSite)) {
+                                    console.log("Overriding "+ad.adName+" ad...")
+                                    ad = v.new
+                                    atwn = v.new.adTown
+                                }
+                            })
+                        }
                         m = L.marker(ad.adLocation.split(", "), {title: ad.adName})
                         if (ad.adPinImage != null) {
                             m = L.marker(ad.adLocation.split(", "), {
@@ -299,10 +317,14 @@
                         }
                                     
                         pins.push(m)
-                        xhr2.open("GET", tg, false)
-                        xhr2.send()
+                        if (atwn) {
+                            adTextData = adTextData.replace("(LocationName)", atwn)
+                        } else {
+                            xhr2.open("GET", tg, false)
+                            xhr2.send()
 
-                        adTextData = adTextData.replace("(LocationName)", JSON.parse(xhr2.responseText).features[0].place_name)
+                            adTextData = adTextData.replace("(LocationName)", JSON.parse(xhr2.responseText).features[0].place_name)
+                        }
                         m.bindPopup(adTextData)
                         m.addTo(data)
                         
