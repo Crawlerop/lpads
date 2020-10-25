@@ -238,14 +238,6 @@
                     layers: [normal]
                 })
 
-                L.easyButton('fa-search', function(){
-                    document.location = "search.html"
-                }).addTo(mymap)
-
-                L.easyButton('fa-pencil', function(){
-                    document.location = "editor.html?lat="+start[0]+"&lng="+start[1]
-                })
-
                 if (addLayer == true) {
                     mymap.addLayer(data)
                 }
@@ -488,6 +480,14 @@
                 }
 
                 L.easyButton('fa-map-marker', dosearch).addTo(mymap)
+
+                L.easyButton('fa-search', function(){
+                    document.location = "search.html"
+                }).addTo(mymap)
+
+                L.easyButton('fa-pencil', function(){
+                    document.location = "editor.html?lat="+start[0]+"&lng="+start[1]
+                }).addTo(mymap)
 
                 //console.log(addLayer)
             </script>
