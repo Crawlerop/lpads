@@ -274,7 +274,8 @@ except Exception:
     )
     hsession.mount("http://", adapter)
     hsession.mount("https://", adapter)
-    htimeout = httpapi.Timeout(900)
+    #htimeout = httpapi.Timeout(900)
+    htimeout = 900
 
 
 def main():
