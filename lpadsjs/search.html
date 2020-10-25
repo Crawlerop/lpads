@@ -111,7 +111,7 @@
                             o = ""
                             rs = JSON.parse(this.responseText)
                             rs.features.forEach(function(feature){
-                                o += `<a href="mapads_marker.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`"">`+feature.place_name+` - `+feature.center[1]+`, `+feature.center[0]+`</a> - <a href="mapads_marker_cors.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`">CORS</a> - <button onclick="navigator.clipboard.writeText('`+feature.center[1]+", "+feature.center[0]+`')">Copy Coords</button> - <button onclick="navigator.clipboard.writeText('geo:`+feature.center[1]+","+feature.center[0]+`')">Copy geoURI</button><br>`
+                                o += `<a href="mapads_marker.html?localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`"">`+feature.place_name+` - `+feature.center[1]+`, `+feature.center[0]+`</a> - <a href="mapads_marker.html?cors=true&localads=true&lat=`+feature.center[1]+`&lng=`+feature.center[0]+`">CORS</a> - <button onclick="navigator.clipboard.writeText('`+feature.center[1]+", "+feature.center[0]+`')">Copy Coords</button> - <button onclick="navigator.clipboard.writeText('geo:`+feature.center[1]+","+feature.center[0]+`')">Copy geoURI</button><br>`
                             })
                             res.innerHTML = o
                             //console.log(res.innerHTML)
