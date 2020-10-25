@@ -439,7 +439,7 @@
                     }); 
                     pins = []
                     pos = adMarker.getLatLng()
-                    xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", mkpos.lng).replace("(lat)", mkpos.lat)))
+                    xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", pos.lng).replace("(lat)", pos.lat)))
                     xhr.onreadystatechange = function() {
                         if (this.readyState == 4) {
                             going = false
