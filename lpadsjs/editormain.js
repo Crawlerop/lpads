@@ -130,6 +130,11 @@ setInterval(() => {
         selData.adLocation = document.getElementById("location").value
         selData.adSite = document.getElementById("host").value
         selData.adLink = document.getElementById("link").value
+        if (document.getElementById("town").value != "") {
+            selData.adTown = document.getElementById("town").value
+        } else {
+            selData.adTown = undefined
+        }
         if (document.getElementById("pinlet").value != "") {
             selData.adPinImage = document.getElementById("pinlet").value
         } else {
