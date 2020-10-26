@@ -277,10 +277,14 @@
                 onGeocode = false
 
                 function doAsync(reqid=0, onDone, preCon, t=0) {
-                    if (asyncPayload.length < 1) {
+                    if (preCon != null && preCon() == false) {
                         return
                     }
-                    if (preCon != null && preCon() == false) {
+
+                    if (asyncPayload.length < 1) {
+                        if (onDone != null) { 
+                            onDone()
+                        }
                         return
                     }
 
