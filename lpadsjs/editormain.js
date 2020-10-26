@@ -181,11 +181,10 @@ document.getElementById("update").onclick = function() {
             newData.push(jsonCopy(d))
         }
     })
-    adData = newData
     pins.forEach(function(a){
         a.remove()
     })
-    loadMarker(adData)
+    loadMarker(newData)
 }
 
 
