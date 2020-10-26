@@ -486,7 +486,8 @@
                 }).addTo(mymap)
 
                 L.easyButton('fa-pencil', function(){
-                    document.location = "editor.html?lat="+start[0]+"&lng="+start[1]
+                    adm = adMarker.getLatLng()
+                    document.location = "editor.html?lat="+adm.lat+"&lng="+adm.lng
                 }).addTo(mymap)
 
                 //console.log(addLayer)
