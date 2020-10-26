@@ -20,6 +20,7 @@ var MAPAD_ADSITE_WTAARRAY = MAPAD_ADLOCATIONLNG
 function parseAds(mapad) {
     var ret = {"noAds": false, "mapAds": null}
     var listdata = mapad[MAPAD_ADLIST]
+    adId = 0
     if (listdata !== null) {
         ret.mapAds = []
         listdata.forEach(function(ldata){
@@ -38,7 +39,8 @@ function parseAds(mapad) {
                 adPromolyr = {"promoTitle": adPromoTxt[0], "promoDesc": adPromoTxt[1], "promoButton": adPromoTxt[2]}
                 adData = {"adImage": adImg, "adPromo": adPromolyr}
             }
-            ret.mapAds.push({"adName":adName,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet})
+            ret.mapAds.push({"adName":adName,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId})
+            adId++
         })
     } else {
         ret.noAds = true
