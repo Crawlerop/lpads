@@ -94,7 +94,11 @@ function loadMarker(data) {
             } else {
                 document.getElementById("promo").value = ""
             }
-            document.getElementById("town").value = ""
+            if (selData.adTown != null) {
+                document.getElementById("town").value = selData.adTown
+            } else {
+                document.getElementById("town").value = ""
+            }
         })
         pins.push(m)
         m.addTo(mymap)
