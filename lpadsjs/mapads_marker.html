@@ -276,7 +276,7 @@
 
                 onGeocode = false
 
-                function doAsync(reqid=0, onDone, preCon, t=0, tinc=300) {
+                function doAsync(reqid=0, onDone, preCon, t=0) {
                     if (preCon != null && preCon() == false) {
                         return
                     }
@@ -288,7 +288,7 @@
                             if (preCon != null && preCon() == true) {
                                 asyncPayload[reqid].asCallback(this.responseText)
                                 if (reqid < asyncPayload.length-1) {
-                                    setTimeout(function(){doAsync(reqid+1, onDone, preCon, t+tinc)}, t+tinc)
+                                    setTimeout(function(){doAsync(reqid+1, onDone, preCon, t)}, t)
                                 } else {
                                     if (onDone != null) { 
                                         onDone()
@@ -374,7 +374,7 @@
                         }
                     })
                     onGeocode = true
-                    doAsync(0, function(){console.log("Geocode Done!"); findloc._currentState.onClick = dosearch; adMarker.on('click', clk); adMarker.dragging.enable(); onGeocode=false; asyncPayload=[]}, function(){if (!onGeocode) { console.log("Geocode Aborted!"); } return onGeocode}, 0, 80)
+                    doAsync(0, function(){console.log("Geocode Done!"); findloc._currentState.onClick = dosearch; adMarker.on('click', clk); adMarker.dragging.enable(); onGeocode=false; asyncPayload=[]}, function(){if (!onGeocode) { console.log("Geocode Aborted!"); } return onGeocode}, 100)
                 }
 
                 var adData = null;
