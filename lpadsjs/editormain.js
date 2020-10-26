@@ -120,6 +120,10 @@ document.getElementById("save").onclick = function() {
     }
 }
 
+document.getElementById("cancel").onclick = function() {
+    window.location = "mapads_marker.html?localads=true&lat="+up.get("lat")+"&lng="+up.get("lng")
+}
+
 document.getElementById("remove").onclick = function() {
     if (selData != null) {
         if (overrideIndex(selData) != -1) {

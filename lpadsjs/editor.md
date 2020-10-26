@@ -32,7 +32,8 @@
   <button id="add" type="button">Add</button> 
   <button id="remove" type="button">Remove</button> 
   <button id="update" type="button">Update</button> 
-  <button id="reload" type="button">Refresh</button>
+  <button id="reload" type="button">Refresh</button> 
+  <button id="cancel" type="button">Cancel</button>
 </form>
 </div>
 

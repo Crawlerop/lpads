@@ -267,8 +267,81 @@
                 layers = L.control.layers(layernames, {"Local Ads": data})
                 layers.addTo(mymap)	
 
+                
+                asyncPayload = []
+
+                function asyncRequest(loc, cb, err) {
+                    asyncPayload.push({"asLocation":loc,"asCallback":cb,"asError":err})
+                }
+
+                onGeocode = false
+
+                function doAsync(reqid=0, onDone, preCon, t=0, tinc=300) {
+                    if (preCon != null && preCon() == false) {
+                        return
+                    }
+
+                    let xhr4 = new XMLHttpRequest()
+                    xhr4.open("GET", asyncPayload[reqid].asLocation)
+                    xhr4.onreadystatechange = function() {
+                        if (this.readyState == 4) {
+                            if (preCon != null && preCon() == true) {
+                                asyncPayload[reqid].asCallback(this.responseText)
+                                if (reqid < asyncPayload.length-1) {
+                                    setTimeout(function(){doAsync(reqid+1, onDone, preCon, t+tinc)}, t+tinc)
+                                } else {
+                                    if (onDone != null) { 
+                                        onDone()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    xhr4.onerror = function(e) {
+                        if (err != null) {
+                            asyncPayload[reqid].asError(e)
+                        }
+                        onSearch = false
+                    }
+                    xhr4.send()
+                }
+
+                function setupMarker(ad) {
+                    m = L.marker(ad.adLocation.split(", "), {title: ad.adName})
+                    if (ad.adPinImage != null) {
+                        m = L.marker(ad.adLocation.split(", "), {
+                            title: ad.adName,
+                            icon: L.icon({
+                                iconUrl: ad.adPinImage,
+                                iconSize: [32,32]
+                            })
+                        })
+
+                    }
+                    adTextData = "<h1>"+ad.adName+"</h1>"
+                    if (ad.promoData == null) {
+                        adTextData += "In: <b>(LocationName)</b><br>"
+                        adTextData += "Why: <b>"+ad.adWhy+"</b>"
+                        adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.adSite+"</a>"
+                        adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+lp[0]+"&lng="+lp[1]+"\">PassiveAssist</a>"
+                    } else {
+                        adTextData = "<h1>"+ad.promoData.adPromo.promoTitle+"</h1>"
+                        adTextData += "<h2>"+ad.adName+"</h2>"
+                        adTextData += "In: <b>(LocationName)</b><br>"
+                        adTextData += "<h3>"+ad.promoData.adPromo.promoDesc+"</h3>"
+                        adTextData += "Why: <b>"+ad.adWhy+"</b>"
+                        adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.promoData.adPromo.promoButton+"</a>"
+                        adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+lp[0]+"&lng="+lp[1]+"\">PassiveAssist</a>"
+                    }
+                                        
+                    pins.push(m)
+                    return m
+                }
+
                 function loadPins(adData) {
                     adData.forEach(function(ad) {
+                        lp = ad.adLocation.split(", ")
+                        tg = searchAPIURL.replace("(query)", lp[1] + "," + lp[0])
                         var atwn = null
                         if (overrides != null) {
                             overrides.forEach(function(v){
@@ -279,48 +352,29 @@
                                 }
                             })
                         }
-                        m = L.marker(ad.adLocation.split(", "), {title: ad.adName})
-                        if (ad.adPinImage != null) {
-                            m = L.marker(ad.adLocation.split(", "), {
-                                title: ad.adName,
-                                icon: L.icon({
-                                    iconUrl: ad.adPinImage,
-                                    iconSize: [32,32]
-                                })
-                            })
 
-                        }
-                        adTextData = "<h1>"+ad.adName+"</h1>"
-                        lp = ad.adLocation.split(", ")
-                        tg = searchAPIURL.replace("(query)", lp[1] + "," + lp[0])
-                        if (ad.promoData == null) {
-                            adTextData += "In: <b>(LocationName)</b><br>"
-                            adTextData += "Why: <b>"+ad.adWhy+"</b>"
-                            adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.adSite+"</a>"
-                            adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+lp[0]+"&lng="+lp[1]+"\">PassiveAssist</a>"
-                        } else {
-                            adTextData = "<h1>"+ad.promoData.adPromo.promoTitle+"</h1>"
-                            adTextData += "<h2>"+ad.adName+"</h2>"
-                            adTextData += "In: <b>(LocationName)</b><br>"
-                            adTextData += "<h3>"+ad.promoData.adPromo.promoDesc+"</h3>"
-                            adTextData += "Why: <b>"+ad.adWhy+"</b>"
-                            adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.promoData.adPromo.promoButton+"</a>"
-                            adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+lp[0]+"&lng="+lp[1]+"\">PassiveAssist</a>"
-                        }
-                                    
-                        pins.push(m)
                         if (atwn) {
+                            m = setupMarker(JSON.parse(JSON.stringify(ad)))
                             adTextData = adTextData.replace("(LocationName)", atwn)
+                            m.bindPopup(adTextData)
+                            m.addTo(data)
+                            asyncPayload = []
                         } else {
-                            xhr2.open("GET", tg, false)
-                            xhr2.send()
-
-                            adTextData = adTextData.replace("(LocationName)", JSON.parse(xhr2.responseText).features[0].place_name)
+                            adMarker.dragging.disable()
+                            adMarker.off('click')
+                            adMarker.on('click', function(){return;})
+                            findloc._currentState.onClick = function(){return;}
+                            asyncRequest(tg, function(rt){
+                                m = setupMarker(JSON.parse(JSON.stringify(ad)))
+                                
+                                adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).features[0].place_name)
+                                m.bindPopup(adTextData)
+                                m.addTo(data)
+                            })
                         }
-                        m.bindPopup(adTextData)
-                        m.addTo(data)
-                        
                     })
+                    onGeocode = true
+                    doAsync(0, function(){console.log("Geocode Done!"); findloc._currentState.onClick = dosearch; adMarker.on('click', clk); adMarker.dragging.enable(); onGeocode=false; asyncPayload=[]}, function(){if (!onGeocode) { console.log("Geocode Aborted!"); } return onGeocode}, 0, 80)
                 }
 
                 var adData = null;
@@ -339,6 +393,8 @@
                 adMarker.on("dragstart", function() {
                     if (going == true) {
                         xhr.abort()
+                        onGeocode = false
+                        //xhr4.abort()
                         going = false
                         searching = false
                     } 
@@ -377,9 +433,11 @@
                     xhr.send()
                 })
 
-                adMarker.on('click', function(){
+                function clk(){
                     if (going == true) {
                         xhr.abort()
+                        onGeocode = false
+                        //xhr4.abort()
                         going = false
                         searching = false
                     } 
@@ -410,7 +468,9 @@
                     }
                     going = true
                     xhr.send()
-                })
+                }
+
+                adMarker.on('click', clk)
 
                 xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", start[1]).replace("(lat)", start[0])))
                 xhr.onreadystatechange = function() {
@@ -438,12 +498,16 @@
                 function dosearch() {
                     if (searching == true && going == true) {
                         xhr.abort()
+                        onGeocode = false
+                        //xhr4.abort()
                         going = false
                         searching = false
                         return
                     }
                     if (going == true) {
                         xhr.abort()
+                        onGeocode = false
+                        //xhr4.abort()
                         going = false
                         searching = false
                     } 
@@ -479,7 +543,8 @@
                     xhr.send()
                 }
 
-                L.easyButton('fa-map-marker', dosearch).addTo(mymap)
+                findloc = L.easyButton('fa-map-marker', dosearch)
+                findloc.addTo(mymap)
 
                 L.easyButton('fa-search', function(){
                     document.location = "search.html"
