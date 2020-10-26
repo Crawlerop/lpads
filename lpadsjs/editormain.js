@@ -75,6 +75,7 @@ function loadMarker(data) {
             } else {
                 document.getElementById("promo").value = ""
             }
+            document.getElementById("town").value = ""
         })
         pins.push(m)
         m.addTo(mymap)
