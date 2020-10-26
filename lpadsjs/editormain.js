@@ -6,6 +6,7 @@ var selData = null;
 var index = null;
 var pins = [];
 var repdata = [];
+var dist = 1;
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 21,
@@ -82,9 +83,12 @@ function loadMarker(data) {
 
 up = new URLSearchParams(window.location.search)
 function start() {
+    if (up.get('dist')) {
+        dist = parseFloat(up.get('dist'))
+    }
     if (up.get('lat') && up.get('lng')) {
         mymap.setView([parseFloat(up.get('lat')), parseFloat(up.get('lng'))], 14)
-        xhr.open("GET", "https://api.allorigins.win/raw?url=" + encodeURIComponent(lpadURL.replace("(dist)", 4000).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat"))))
+        xhr.open("GET", "https://api.allorigins.win/raw?url=" + encodeURIComponent(lpadURL.replace("(dist)", dist).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat"))))
         xhr.onreadystatechange = function() {
             if (this.readyState == 4) {
                 out = xhr.responseText.replace(")]}'\n", "")
@@ -122,6 +126,10 @@ document.getElementById("remove").onclick = function() {
             alert("Data removed!")
         }
     } 
+}
+
+document.getElementById("reload").onclick = function() {
+    location.reload()
 }
 
 setInterval(() => {
