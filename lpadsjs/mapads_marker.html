@@ -318,12 +318,13 @@
                         })
 
                     }
+                    ld = ad.adLocation.split(", ")
                     adTextData = "<h1>"+ad.adName+"</h1>"
                     if (ad.promoData == null) {
                         adTextData += "In: <b>(LocationName)</b><br>"
                         adTextData += "Why: <b>"+ad.adWhy+"</b>"
                         adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.adSite+"</a>"
-                        adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+lp[0]+"&lng="+lp[1]+"\">PassiveAssist</a>"
+                        adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+ld[0]+"&lng="+ld[1]+"\">PassiveAssist</a>"
                     } else {
                         adTextData = "<h1>"+ad.promoData.adPromo.promoTitle+"</h1>"
                         adTextData += "<h2>"+ad.adName+"</h2>"
@@ -331,7 +332,7 @@
                         adTextData += "<h3>"+ad.promoData.adPromo.promoDesc+"</h3>"
                         adTextData += "Why: <b>"+ad.adWhy+"</b>"
                         adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.promoData.adPromo.promoButton+"</a>"
-                        adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+lp[0]+"&lng="+lp[1]+"\">PassiveAssist</a>"
+                        adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+ld[0]+"&lng="+ld[1]+"\">PassiveAssist</a>"
                     }
                                         
                     pins.push(m)
@@ -374,7 +375,7 @@
                         }
                     })
                     onGeocode = true
-                    doAsync(0, function(){console.log("Geocode Done!"); findloc._currentState.onClick = dosearch; adMarker.on('click', clk); adMarker.dragging.enable(); onGeocode=false; asyncPayload=[]}, function(){if (!onGeocode) { console.log("Geocode Aborted!"); } return onGeocode}, 100)
+                    doAsync(0, function(){console.log("Geocode Done!"); findloc._currentState.onClick = dosearch; adMarker.on('click', clk); adMarker.dragging.enable(); onGeocode=false; asyncPayload=[]}, function(){if (!onGeocode) { console.log("Geocode Aborted!"); } return onGeocode}, 250)
                 }
 
                 var adData = null;
