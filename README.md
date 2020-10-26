@@ -1,5 +1,5 @@
 # lpads
-![title](https://raw.githubusercontent.com/crawlerop/lpads/main/lpads.png)
+![title_with_editor](https://raw.githubusercontent.com/crawlerop/lpads/main/lpads.png)
 
 Many tools to work with Google Maps [Location Ads](https://support.google.com/maps/answer/9947218) (Norries not included.)
 
@@ -41,7 +41,8 @@ We also ported LPAds to JavaScript! To include in your site, add in your html fi
 ```
 <script src="https://raw.githubusercontent.com/Crawlerop/lpads/main/lpadsjs/mapads.js" crossorigin=""></script>
 ```
-If you want the examples, please click [here](https://crawlerop.github.io/lpads/lpadsjs/mapads_marker.html?localads=true)
+If you want the examples, please click [here](https://crawlerop.github.io/lpads/lpadsjs/mapads_marker.html?localads=true)  
+We also have included the editor, please click the pencil button to start editing the ads.
 
 ## Tracking
 Locational ads depends on your interests. So ads may very on different account you are using.  
