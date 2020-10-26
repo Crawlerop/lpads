@@ -375,7 +375,7 @@
                         }
                     })
                     onGeocode = true
-                    doAsync(0, function(){console.log("Geocode Done!"); findloc._currentState.onClick = dosearch; adMarker.on('click', clk); adMarker.dragging.enable(); onGeocode=false; asyncPayload=[]}, function(){if (!onGeocode) { console.log("Geocode Aborted!"); } return onGeocode}, 25)
+                    doAsync(0, function(){console.log("Geocode Done!"); findloc._currentState.onClick = dosearch; adMarker.on('click', clk); adMarker.dragging.enable(); onGeocode=false; asyncPayload=[]}, function(){if (!onGeocode) { console.log("Geocode Aborted!"); } return onGeocode}, 75)
                 }
 
                 var adData = null;
