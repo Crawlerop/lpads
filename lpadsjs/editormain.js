@@ -151,6 +151,7 @@ document.getElementById("remove").onclick = function() {
         if (overrideIndex(selData) != -1) {
             repdata.splice(overrideIndex(selData), 1)
             alert("Data removed!")
+            upd()
         }
     } 
 }
@@ -193,10 +194,11 @@ document.getElementById("add").onclick = function() {
             repdata[ov] = selData
         }
         alert("Added")
+        upd()
     }
 }
 
-document.getElementById("update").onclick = function() {
+function upd() {
     newData = []
 
     adData.forEach(function(d){
@@ -214,5 +216,7 @@ document.getElementById("update").onclick = function() {
     loadMarker(newData)
 }
 
+
+document.getElementById("update").onclick = upd
 
 console.log("LPAds editor loaded!")
