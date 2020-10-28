@@ -213,7 +213,7 @@ document.getElementById("add").onclick = function() {
         if (ov == -1) {
             repdata.push({"target": adData[index], "new": selData})
         } else {
-            repdata[ov] = selData
+            repdata[ov] = {"target": adData[index], "new": selData}
         }
         alert("Added")
         upd()
@@ -235,6 +235,15 @@ function upd() {
     pins.forEach(function(a){
         a.remove()
     })
+    selData = null
+    document.getElementById("place").value = ""
+    document.getElementById("location").value = ""
+    document.getElementById("host").value = ""
+    document.getElementById("link").value = ""
+    document.getElementById("pinlet").value = ""
+    document.getElementById("wta").value = ""
+    document.getElementById("promo").value = ""
+    document.getElementById("town").value = ""
     loadMarker(newData)
 }
 
