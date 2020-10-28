@@ -15,6 +15,14 @@ if (up.get("here") == "true") {
     here = true
 }
 
+if (up.get("override") != null) {
+    try {
+        repdata = JSON.parse(window.atob(up.get("override"))).overrides
+    } catch (e) {
+
+    }
+}
+
 if (here) {
     L.tileLayer('https://{s}.base.maps.ls.hereapi.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/512/png?apiKey=y1jXMiseAmIRhdY2pdC5ClWFnBlNP1U_xKDns2jXtYY&lg=eng', {
     maxZoom: 19,
@@ -126,7 +134,21 @@ function start() {
                     setTimeout(start, 200)
                 } else {
                     adData = adResp.mapAds
-                    loadMarker(adData)
+                    if (up.get("override") != null) {
+                        newData = []
+                        adData.forEach(function(d){
+                            ovr = findOverride(d)
+                            if (ovr != -1) {
+                                newData.push(jsonCopy(repdata[ovr].new)) 
+                                console.log("Override found!")           
+                            } else {
+                                newData.push(jsonCopy(d))
+                            }
+                        })
+                        loadMarker(newData)
+                    } else {
+                        loadMarker(adData)
+                    }
                 }
             }
         }

@@ -560,7 +560,7 @@
 
                 L.easyButton('fa-pencil', function(){
                     adm = adMarker.getLatLng()
-                    document.location = "editor.html?lat="+adm.lat+"&lng="+adm.lng
+                    document.location = "editor.html?lat="+adm.lat+"&lng="+adm.lng+"&dist="+dist+((up.get("override") != null) ? "&override=" + up.get("override") : "")
                 }).addTo(mymap)
 
                 //console.log(addLayer)
