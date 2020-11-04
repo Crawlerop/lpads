@@ -53,7 +53,7 @@ function overrideIndex(adData) {
     i = 0
     for (s = 0; s<repdata.length; s++) {
         c = repdata[s]
-        if (adData.adName == c.new.adName && adData.adLocation == c.new.adLocation && adData.adSite == c.new.adSite) {
+        if (adData.id == c.new.id) {
             return i
         }
         i += 1
@@ -65,7 +65,7 @@ function findOverride(adData) {
     i = 0
     for (s = 0; s<repdata.length; s++) {
         c = repdata[s]
-        if (adData.adName == c.target.adName && adData.adLocation == c.target.adLocation && adData.adSite == c.target.adSite) {
+        if (adData.id == c.target.id) {
             return i
         }
         i += 1
@@ -165,7 +165,7 @@ document.getElementById("save").onclick = function() {
 }
 
 document.getElementById("cancel").onclick = function() {
-    window.location = "mapads_marker.html?localads=true&lat="+up.get("lat")+"&lng="+up.get("lng")
+    history.back()
 }
 
 document.getElementById("remove").onclick = function() {

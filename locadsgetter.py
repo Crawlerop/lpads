@@ -353,6 +353,7 @@ def main():
     print("Ad Found!")
 
     for mapa in mapad.mapads:
+        print(f"Ad Place: {mapa.get('adPlace')}")
         print(f"Ad Name: {mapa.get('adName')}")
         print(f"Ad Location: {mapa.get('adLocation')}")
         print(f"Ad Link: {mapa.get('adLink')}")

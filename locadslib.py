@@ -3,6 +3,7 @@ Library for parsing GMaps Location ads
 '''
 
 MAPAD_ADLIST = 0
+MAPAD_ADMAPPLACE = MAPAD_ADLIST
 MAPAD_ADNAME = 1
 MAPAD_ADLOCATION = 2
 MAPAD_ADLOCATION_PINLET = MAPAD_ADNAME
@@ -30,6 +31,7 @@ class MapAds():
         if listdata:
             self.mapads = []
             for ldata in listdata:
+                adplace = ldata[MAPAD_ADMAPPLACE]
                 adname = ldata[MAPAD_ADNAME]
                 adlocdata = (str(ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLAT]), str(ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLNG]))
                 adurllink = ldata[MAPAD_ADLINKS][MAPAD_ADCLICK]
@@ -54,7 +56,7 @@ class MapAds():
                     addata = {"adImage": adimg, "adPromo": adpromolyr}
 
 
-                self.mapads.append({"adName":adname,"adLocation":", ".join(adlocdata),"adLink":adurllink,"adSite":adbasesite,"adWhy":adwta,"promoData":addata,"adPinImage":adpinlet})
+                self.mapads.append({"adName":adname,"adPlace":adplace,"adLocation":", ".join(adlocdata),"adLink":adurllink,"adSite":adbasesite,"adWhy":adwta,"promoData":addata,"adPinImage":adpinlet})
 
         else:
             self.noads = True

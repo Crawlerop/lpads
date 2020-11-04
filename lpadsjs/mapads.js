@@ -1,4 +1,5 @@
 var MAPAD_ADLIST = 0
+var MAPAD_ADMAPPLACE = MAPAD_ADLIST
 var MAPAD_ADNAME = 1
 var MAPAD_ADLOCATION = 2
 var MAPAD_ADLOCATION_PINLET = MAPAD_ADNAME
@@ -24,6 +25,7 @@ function parseAds(mapad) {
     if (listdata !== null) {
         ret.mapAds = []
         listdata.forEach(function(ldata){
+            adPlace = ldata[MAPAD_ADMAPPLACE]
             adName = ldata[MAPAD_ADNAME]
             adLocData = [ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLAT].toString(), ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLNG].toString()]
             adUrlLink = ldata[MAPAD_ADLINKS][MAPAD_ADCLICK]
@@ -39,7 +41,7 @@ function parseAds(mapad) {
                 adPromolyr = {"promoTitle": adPromoTxt[0], "promoDesc": adPromoTxt[1], "promoButton": adPromoTxt[2]}
                 adData = {"adImage": adImg, "adPromo": adPromolyr}
             }
-            ret.mapAds.push({"adName":adName,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId})
+            ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId})
             adId++
         })
     } else {
