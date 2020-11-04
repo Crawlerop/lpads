@@ -353,7 +353,7 @@
                         var atwn = null
                         if (overrides != null) {
                             overrides.forEach(function(v){
-                                if (ad.adName == v.target.adName && (v.target.adLocation == "*" || ad.adLocation == v.target.adLocation) && (v.target.adSite == "*" || ad.adSite == v.target.adSite)) {
+                                if (ad.id == v.target.id) {
                                     console.log("Overriding "+ad.adName+" ad...")
                                     ad = v.new
                                     atwn = v.new.adTown
