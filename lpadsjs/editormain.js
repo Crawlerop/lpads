@@ -238,12 +238,13 @@ setInterval(() => {
 document.getElementById("add").onclick = function() {
     if (selData != null) {
         ov = overrideIndex(selData)
+        selData.hash = undefined
         if (ov == -1) {
             repdata.push({"target": adData[index], "new": selData})
         } else {
             repdata[ov] = {"target": adData[index], "new": selData}
         }
-        alert("Added")
+        alert("Added!")
         upd()
     }
 }
