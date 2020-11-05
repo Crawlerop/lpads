@@ -49,26 +49,54 @@ function jsonCopy(json) {
     return JSON.parse(JSON.stringify(json))
 }
 
+function fixHash(adData) {
+    let overrides = repdata
+    for (i=0;i<overrides.length;i++) {
+        if (overrides[i].target.hash == undefined) {
+            if (adData.adName == overrides[i].target.adName && adBaseSite.adName == overrides[i].target.adBaseSite) {
+                overrides[i].target.hash = adData.hash
+                return
+            }
+        }
+    }
+    //console.log("No override found for "+adData+"!")
+}
+
+function fixHash2(adData) {
+    let overrides = repdata
+    for (i=0;i<overrides.length;i++) {
+        if (overrides[i].new.hash == undefined) {
+            if (adData.adName == overrides[i].new.adName && adBaseSite.adName == overrides[i].new.adBaseSite) {
+                overrides[i].new.hash = adData.hash
+                return
+            }
+        }
+    }
+    //console.log("No override found for "+adData+"!")
+}
+
 function overrideIndex(adData) {
-    i = 0
+    let j = 0
+    fixHash2(adData)
     for (s = 0; s<repdata.length; s++) {
         c = repdata[s]
-        if (adData.id == c.new.id) {
-            return i
+        if (adData.hash == c.new.hash) {
+            return j
         }
-        i += 1
+        j += 1
     }
     return -1
 }
 
 function findOverride(adData) {
-    i = 0
+    let j = 0
+    fixHash(adData)
     for (s = 0; s<repdata.length; s++) {
         c = repdata[s]
-        if (adData.id == c.target.id) {
-            return i
+        if (adData.hash == c.target.hash) {
+            return j
         }
-        i += 1
+        j += 1
     }
     return -1
 }

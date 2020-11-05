@@ -346,14 +346,27 @@
                     return m
                 }
 
+                function fixHash(adData) {
+                    for (i=0;i<overrides.length;i++) {
+                        if (overrides[i].target.hash == undefined) {
+                            if (adData.adName == overrides[i].target.adName && adBaseSite.adName == overrides[i].target.adBaseSite) {
+                                overrides[i].target.hash = adData.hash
+                                return
+                            }
+                        }
+                    }
+                    //console.log("No override found for "+adData+"!")
+                }
+
                 function loadPins(adData) {
                     adData.forEach(function(ad) {
                         lp = ad.adLocation.split(", ")
                         tg = searchAPIURL.replace("(query)", lp[1] + "," + lp[0])
                         var atwn = null
                         if (overrides != null) {
+                            fixHash(ad)
                             overrides.forEach(function(v){
-                                if (ad.id == v.target.id) {
+                                if (ad.hash == v.target.hash) {
                                     console.log("Overriding "+ad.adName+" ad...")
                                     ad = v.new
                                     atwn = v.new.adTown
