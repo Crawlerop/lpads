@@ -53,7 +53,12 @@ function fixHash(adData) {
     let overrides = repdata
     for (i=0;i<overrides.length;i++) {
         if (overrides[i].target.hash == undefined) {
-            if (adData.adName == overrides[i].target.adName && adBaseSite.adName == overrides[i].target.adBaseSite) {
+            if (overrides[i].target.adPlace == undefined) {
+                if (adData.adName == overrides[i].target.adName && adData.adBaseSite == overrides[i].target.adBaseSite) {
+                    overrides[i].target.adPlace = adData.adPlace
+                }
+            }
+            if (adData.adPlace == overrides[i].target.adPlace) {
                 overrides[i].target.hash = adData.hash
                 return
             }
@@ -66,7 +71,12 @@ function fixHash2(adData) {
     let overrides = repdata
     for (i=0;i<overrides.length;i++) {
         if (overrides[i].new.hash == undefined) {
-            if (adData.adName == overrides[i].new.adName && adBaseSite.adName == overrides[i].new.adBaseSite) {
+            if (overrides[i].new.adPlace == undefined) {
+                if (adData.adName == overrides[i].new.adName && adData.adBaseSite == overrides[i].new.adBaseSite) {
+                    overrides[i].new.adPlace = adData.adPlace
+                }
+            }
+            if (adData.adPlace == overrides[i].new.adPlace) {
                 overrides[i].new.hash = adData.hash
                 return
             }
