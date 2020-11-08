@@ -54,7 +54,7 @@ function fixHash(adData) {
     for (i=0;i<overrides.length;i++) {
         if (overrides[i].target.hash == undefined) {
             if (overrides[i].target.adPlace == undefined) {
-                if (adData.adName == overrides[i].target.adName && adData.adBaseSite == overrides[i].target.adBaseSite) {
+                if (adData.adName == overrides[i].target.adName && adData.adSite == overrides[i].target.adSite) {
                     overrides[i].target.adPlace = adData.adPlace
                 }
             }
@@ -72,7 +72,7 @@ function fixHash2(adData) {
     for (i=0;i<overrides.length;i++) {
         if (overrides[i].new.hash == undefined) {
             if (overrides[i].new.adPlace == undefined) {
-                if (adData.adName == overrides[i].new.adName && adData.adBaseSite == overrides[i].new.adBaseSite) {
+                if (adData.adName == overrides[i].new.adName && adData.adSite == overrides[i].new.adSite) {
                     overrides[i].new.adPlace = adData.adPlace
                 }
             }
