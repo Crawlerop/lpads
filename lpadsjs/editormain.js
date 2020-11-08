@@ -151,46 +151,54 @@ function loadMarker(data) {
     })
 }
 
+finding = false
+
+function start2() {
+    xhr.open("GET", "https://api.allorigins.win/raw?url=" + encodeURIComponent(lpadURL.replace("(dist)", dist).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat"))))
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            out = xhr.responseText.replace(")]}'\n", "")
+            try {
+                adProto = JSON.parse(out)
+            } catch (e) {
+                return
+            }
+            adResp = parseAds(adProto)
+            if (adResp.noAds == true) {
+                console.warn("No ads found on "+up.get('lat')+", "+up.get('lng')+"!")
+                setTimeout(start2, 200)
+            } else {
+                finding = false
+                adData = adResp.mapAds
+                if (repdata != null) {
+                    newData = []
+                    adData.forEach(function(d){
+                        ovr = findOverride(d)
+                        if (ovr != -1) {
+                            newData.push(jsonCopy(repdata[ovr].new)) 
+                            console.log("Override found!")           
+                        } else {
+                            newData.push(jsonCopy(d))
+                        }
+                    })
+                    loadMarker(newData)
+                } else {
+                    loadMarker(adData)
+                }
+            }
+        }
+    }
+    xhr.send()
+}
+
 function start() {
     if (up.get('dist')) {
         dist = parseFloat(up.get('dist'))
     }
     if (up.get('lat') && up.get('lng')) {
         mymap.setView([parseFloat(up.get('lat')), parseFloat(up.get('lng'))], 14)
-        xhr.open("GET", "https://api.allorigins.win/raw?url=" + encodeURIComponent(lpadURL.replace("(dist)", dist).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat"))))
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                out = xhr.responseText.replace(")]}'\n", "")
-                try {
-                    adProto = JSON.parse(out)
-                } catch (e) {
-                    return
-                }
-                adResp = parseAds(adProto)
-                if (adResp.noAds == true) {
-                    console.warn("No ads found on "+up.get('lat')+", "+up.get('lng')+"!")
-                    setTimeout(start, 200)
-                } else {
-                    adData = adResp.mapAds
-                    if (up.get("override") != null) {
-                        newData = []
-                        adData.forEach(function(d){
-                            ovr = findOverride(d)
-                            if (ovr != -1) {
-                                newData.push(jsonCopy(repdata[ovr].new)) 
-                                console.log("Override found!")           
-                            } else {
-                                newData.push(jsonCopy(d))
-                            }
-                        })
-                        loadMarker(newData)
-                    } else {
-                        loadMarker(adData)
-                    }
-                }
-            }
-        }
-        xhr.send()
+        finding = true
+        start2()
     }
 }
 
@@ -217,7 +225,24 @@ document.getElementById("remove").onclick = function() {
 }
 
 document.getElementById("reload").onclick = function() {
-    location.reload()
+    //location.reload()
+    if (finding == true) {
+        return
+    }
+    finding = true
+    pins.forEach(function(a){
+        a.remove()
+    })
+    selData = null
+    document.getElementById("place").value = ""
+    document.getElementById("location").value = ""
+    document.getElementById("host").value = ""
+    document.getElementById("link").value = ""
+    document.getElementById("pinlet").value = ""
+    document.getElementById("wta").value = ""
+    document.getElementById("promo").value = ""
+    document.getElementById("town").value = ""
+    start2()
 }
 
 setInterval(() => {
