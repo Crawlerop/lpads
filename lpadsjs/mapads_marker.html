@@ -284,6 +284,7 @@
                     }
 
                     if (asyncPayload.length < 1) {
+                        console.log("No payload found!")
                         if (onDone != null) { 
                             onDone()
                         }
@@ -378,6 +379,7 @@
                                     console.log("Overriding "+ad.adName+" ad...")
                                     ad = v.new
                                     atwn = v.new.adTown
+                                    break
                                 }
                             }
                         }
@@ -387,15 +389,13 @@
                             adTextData = adTextData.replace("(LocationName)", atwn)
                             m.bindPopup(adTextData)
                             m.addTo(data)
-                            asyncPayload = []
                         } else {
                             adMarker.dragging.disable()
                             adMarker.off('click')
                             adMarker.on('click', function(){return;})
                             findloc._currentState.onClick = function(){return;}
                             asyncRequest(tg, function(rt){
-                                m = setupMarker(JSON.parse(JSON.stringify(ad)))
-                                
+                                m = setupMarker(JSON.parse(JSON.stringify(ad)))  
                                 adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).features[0].place_name)
                                 m.bindPopup(adTextData)
                                 m.addTo(data)
