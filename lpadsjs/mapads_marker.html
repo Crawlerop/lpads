@@ -52,7 +52,8 @@
 
                 function selLPUrl(uri) {
                     let rand = Math.floor(Math.random() * 1000000000000); 
-                    return cors ? uri : "https://api.allorigins.win/raw?hash="+rand.toString()+"&url=" + encodeURIComponent(uri)
+                    let rand2 = Math.floor(Math.random() * 1000000000000); 
+                    return cors ? uri : "https://api.allorigins.win/raw?hash="+rand.toString()+"&url=" + encodeURIComponent(uri+"!1024m1!1024i"+rand2.toString())
                 }
 
                 try {
