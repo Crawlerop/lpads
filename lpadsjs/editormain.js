@@ -162,7 +162,7 @@ function start2() {
     if (!cors) {
         let rand = Math.floor(Math.random() * 1000000000000); 
         let rand2 = Math.floor(Math.random() * 1000000000000); 
-        xhr.open("GET", "https://api.allorigins.win/raw?hash="+rand.toString()+"&url=" + encodeURIComponent(lpadURL.replace("(dist)", dist).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat"))+"!1024m1!1024i"+rand2.toString()))
+        xhr.open("GET", "https://api.allorigins.win/raw?hash="+rand.toString()+"&url=" + encodeURIComponent(lpadURL.replace("(dist)", dist).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat"))+"!1024m1!1024s"+rand2.toString()))
     } else {
         xhr.open("GET", lpadURL.replace("(dist)", dist).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat")))
     }
