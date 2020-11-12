@@ -372,13 +372,14 @@
                         var atwn = null
                         if (overrides != null) {
                             fixHash(ad)
-                            overrides.forEach(function(v){
+                            for (c = 0; c<overrides.length; c++) {
+                                v = overrides[c]
                                 if (ad.hash == v.target.hash) {
                                     console.log("Overriding "+ad.adName+" ad...")
                                     ad = v.new
                                     atwn = v.new.adTown
                                 }
-                            })
+                            }
                         }
 
                         if (atwn) {
