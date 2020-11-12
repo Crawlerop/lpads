@@ -10,9 +10,14 @@ var dist = 1;
 
 up = new URLSearchParams(window.location.search)
 var here = false
+var cors = false
 
 if (up.get("here") == "true") {
     here = true
+}
+
+if (up.get("cors") == "true") {
+    cors = true
 }
 
 if (up.get("override") != null) {
@@ -154,7 +159,12 @@ function loadMarker(data) {
 finding = false
 
 function start2() {
-    xhr.open("GET", "https://api.allorigins.win/raw?url=" + encodeURIComponent(lpadURL.replace("(dist)", dist).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat"))))
+    if (!cors) {
+        let rand = Math.floor(Math.random() * 1000000000000); 
+        xhr.open("GET", "https://api.allorigins.win/raw?hash="+rand.toString()+"&url=" + encodeURIComponent(lpadURL.replace("(dist)", dist).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat"))))
+    } else {
+        xhr.open("GET", lpadURL.replace("(dist)", dist).replace("(long)", up.get("lng")).replace("(lat)", up.get("lat")))
+    }
     xhr.onreadystatechange = function() {
         if (this.readyState == 4) {
             out = xhr.responseText.replace(")]}'\n", "")

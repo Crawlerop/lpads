@@ -51,7 +51,8 @@
                 var overrides = null;
 
                 function selLPUrl(uri) {
-                    return cors ? uri : "https://api.allorigins.win/raw?url=" + encodeURIComponent(uri)
+                    let rand = Math.floor(Math.random() * 1000000000000); 
+                    return cors ? uri : "https://api.allorigins.win/raw?hash="+rand.toString()+"&url=" + encodeURIComponent(uri)
                 }
 
                 try {
