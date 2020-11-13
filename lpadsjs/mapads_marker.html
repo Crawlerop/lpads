@@ -37,6 +37,7 @@
             
         </head>
         <body>
+            <noscript>Please enable the javascript for LPAds.js to work!</noscript>
             <div id="mapid"></div>
             <script>
                 var searching = false;
@@ -316,15 +317,29 @@
                     xhr4.send()
                 }
 
+                function setupIcon(url, size) {
+                    return L.icon({
+                        iconUrl: url,
+                        iconSize: [size[0],size[1]],
+                        iconAnchor: [size[0]/2,size[1]],
+                        popupAnchor: [0,-size[1]+0]
+                    })
+                }
+
                 function setupMarker(ad) {
                     m = L.marker(ad.adLocation.split(", "), {title: ad.adName})
                     if (ad.adPinImage != null) {
+                        if (ad.adPinImage.search("composite_map_square") != -1) {
+                            newIcon = ad.adPinImage.replace("composite_map_square_logo", "composite_map_pinlet")
+                            if (ad.adPinImage.search("_v") == -1) {
+                                newIcon += "_v1"
+                            }
+                        } else {
+                            newIcon = ad.adPinImage
+                        }
                         m = L.marker(ad.adLocation.split(", "), {
                             title: ad.adName,
-                            icon: L.icon({
-                                iconUrl: ad.adPinImage,
-                                iconSize: [32,32]
-                            })
+                            icon: setupIcon(newIcon, [43,60])
                         })
 
                     }
@@ -413,11 +428,14 @@
                 adMarker = new L.marker(start, {
                     title: "Drag or click me to find location ads nearby!", 
                     draggable: true, 
-                    icon: L.icon({
-                        iconUrl: "https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-64.png",
-                        iconSize: [48,48]
-                    })
+                    icon: setupIcon("https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-64.png", [43,42])
                 })
+
+                /*
+                d = new L.marker(start)
+                d.addTo(mymap)
+                */
+
                 adMarker.addTo(data)
                 adMarker.on("dragstart", function() {
                     if (going == true) {

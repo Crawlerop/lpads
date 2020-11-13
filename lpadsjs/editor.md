@@ -1,4 +1,5 @@
 
+<noscript>Please enable the javascript for LPAds.js to work!</noscript>
 <div align="center">
 <h1>LPEditor</h1>
 <div id="map" style="width: 640px; height: 360px;"></div>

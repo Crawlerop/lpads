@@ -116,15 +116,29 @@ function findOverride(adData) {
     return -1
 }
 
+function setupIcon(url, size) {
+    return L.icon({
+        iconUrl: url,
+        iconSize: [size[0],size[1]],
+        iconAnchor: [size[0]/2,size[1]],
+        popupAnchor: [0,-size[1]+0]
+    })
+}
+
 function loadMarker(data) {
     data.forEach(function(ad){
         m = L.marker(ad.adLocation.split(", "))
         if (ad.adPinImage != null) {
+            if (ad.adPinImage.search("composite_map_square") != -1) {
+                newIcon = ad.adPinImage.replace("composite_map_square_logo", "composite_map_pinlet")
+                if (ad.adPinImage.search("_v") == -1) {
+                    newIcon += "_v1"
+                }
+            } else {
+                newIcon = ad.adPinImage
+            }
             m = L.marker(ad.adLocation.split(", "), {
-                icon: L.icon({
-                    iconUrl: ad.adPinImage,
-                    iconSize: [32,32]
-                })
+                icon: setupIcon(newIcon, [43,60])
             })
         }
         m.on("click", function(){
