@@ -44,12 +44,14 @@ We also ported LPAds to JavaScript! To include in your site, add in your html fi
 If you want the examples, please click [here](https://crawlerop.github.io/lpads/lpadsjs/mapads_marker.html?localads=true)  
 We also have included the editor, please click the pencil button to start editing the ads. For advanced features, append &init=base64(script) and &event=base64(script). Where init script parameter is run on startup, and event script parameter is run on ad parsing. The typical script looks something like:
 
+```
 function (ad) {
     if (ad.adName.search("eggs") != -1) {
         ad.adName = "spam"
     }
     return ad
 }
+```
 
 It only override the ad if the resulting event function is NOT null.
 
