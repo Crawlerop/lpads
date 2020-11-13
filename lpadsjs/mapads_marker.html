@@ -416,6 +416,9 @@
                             resp = adParseFunction(JSON.parse(JSON.stringify(ad)))
                             if (resp != null) {
                                 ad = JSON.parse(JSON.stringify(resp))
+                                if (ad.adTown) {
+                                    atwn = ad.adTown
+                                }
                             }
                         }
                         if (overrides != null) {
