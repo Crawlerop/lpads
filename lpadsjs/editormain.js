@@ -130,19 +130,23 @@ function setupIcon(url, size) {
 function loadMarker(data) {
     data.forEach(function(ad){
         m = L.marker(ad.adLocation.split(", "))
+
         if (ad.adPinImage != null) {
+            let iconIsOverride = false
             if (ad.adPinImage.search("composite_map_square") != -1) {
                 newIcon = ad.adPinImage.replace("composite_map_square_logo", "composite_map_pinlet")
                 if (ad.adPinImage.search("_v") == -1) {
                     newIcon += "_v1"
                 }
             } else {
+                iconIsOverride = true
                 newIcon = ad.adPinImage
             }
             m = L.marker(ad.adLocation.split(", "), {
-                icon: setupIcon(newIcon, [43,60])
+                icon: iconIsOverride ? setupIcon(newIcon, [48,48]) : setupIcon(newIcon, [43,60])
             })
         }
+
         m.on("click", function(){
             index = jsonCopy(ad.id)
             selData = jsonCopy(ad)
