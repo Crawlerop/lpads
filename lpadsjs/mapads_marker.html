@@ -53,6 +53,7 @@
                 var blacklist = [];
                 var placeBlacklist = [];
                 var adParseFunction = null;
+                var adStartFunction = null;
 
                 function selLPUrl(uri) {
                     let rand = Math.floor(Math.random() * 1000000000000); 
@@ -86,7 +87,18 @@
                             }
                         }
                     } catch (e) {
-                        console.warn("Error paring the event script: " + e)
+                        console.warn("Error parsing the event script: " + e)
+                    }
+                    try {
+                        if (up.get('init') != null) {
+                            adStartFunction = eval("("+window.atob(up.get('init'))+")")
+                            if (({}).toString.call(adStartFunction) != '[object Function]') {
+                                adStartFunction = null
+                                throw new Error("Init is not a function.")
+                            }
+                        }
+                    } catch (e) {
+                        console.warn("Error parsing the init script: " + e)
                     }
                 } catch (e) {
 
@@ -540,6 +552,10 @@
                 }
 
                 adMarker.on('click', clk)
+
+                if (adStartFunction != null) {
+                    adStartFunction()
+                }
 
                 xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", start[1]).replace("(lat)", start[0])))
                 xhr.onreadystatechange = function() {
