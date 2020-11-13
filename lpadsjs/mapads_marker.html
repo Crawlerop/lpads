@@ -50,6 +50,8 @@
                 var searchAPIURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1";
                 var lpadURL = "https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d(dist)!2d(long)!3d(lat)!2m0!3m2!1i32767!2i32767!4f14!5m2!3b0!5e11"
                 var overrides = null;
+                var blacklist = [];
+                var placeBlacklist = [];
 
                 function selLPUrl(uri) {
                     let rand = Math.floor(Math.random() * 1000000000000); 
@@ -468,7 +470,7 @@
                             } catch (e) {
                                 return
                             }
-                            adResp = parseAds(adProto)
+                            adResp = parseAds(adProto, blacklist, placeBlacklist)
                             if (adResp.noAds == true) {
                                 console.warn("No ads found on "+mkpos.lat+", "+mkpos.lng+"!")
                             } else {
@@ -506,7 +508,7 @@
                             } catch (e) {
                                 return
                             }
-                            adResp = parseAds(adProto)
+                            adResp = parseAds(adProto, blacklist, placeBlacklist)
                             if (adResp.noAds == true) {
                                 console.warn("No ads found on "+pos.lat+", "+pos.lng+"!")
                             } else {
@@ -532,7 +534,7 @@
                         } catch (e) {
                              return
                         }
-                        adResp = parseAds(adProto)
+                        adResp = parseAds(adProto, blacklist, placeBlacklist)
                         if (adResp.noAds == true) {
                             console.warn("No ads found on "+start[0]+", "+start[1]+"!")
                         } else {
@@ -578,7 +580,7 @@
                             } catch (e) {
                                 return
                             }
-                            adResp = parseAds(adProto)
+                            adResp = parseAds(adProto, blacklist, placeBlacklist)
                             if (adResp.noAds == true) {
                                 console.warn("No ads found on "+pos.lat+", "+pos.lng+"!")
                                 if (searching) {dosearch()}

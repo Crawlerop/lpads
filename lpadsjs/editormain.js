@@ -11,6 +11,8 @@ var dist = 1;
 up = new URLSearchParams(window.location.search)
 var here = false
 var cors = false
+var blacklist = []
+var placeBlacklist = []
 
 if (up.get("here") == "true") {
     here = true
@@ -188,7 +190,7 @@ function start2() {
             } catch (e) {
                 return
             }
-            adResp = parseAds(adProto)
+            adResp = parseAds(adProto, blacklist, placeBlacklist)
             if (adResp.noAds == true) {
                 console.warn("No ads found on "+up.get('lat')+", "+up.get('lng')+"!")
                 setTimeout(start2, 200)

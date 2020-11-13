@@ -154,34 +154,56 @@ d = add(d, oldd);
 return rhex(a) + rhex(b) + rhex(c) + rhex(d);
 }
 
-function parseAds(mapad) {
+function parseAds(mapad, blacklist=[], placeblacklist=[]) {
     var ret = {"noAds": false, "mapAds": null}
     var listdata = mapad[MAPAD_ADLIST]
     adId = 0
     if (listdata !== null) {
         ret.mapAds = []
         listdata.forEach(function(ldata){
-            adPlace = ldata[MAPAD_ADMAPPLACE]
-            adName = ldata[MAPAD_ADNAME]
-            adLocData = [ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLAT].toString(), ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLNG].toString()]
-            adUrlLink = ldata[MAPAD_ADLINKS][MAPAD_ADCLICK]
-            adBaseSite = ldata[MAPAD_ADSITE][MAPAD_ADSITE_BASESITE]
-            adWtaP = ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTA]
-            adWta = adWtaP + ". " + ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTAARRAY].join(" ")
-            adPinlet = ldata[MAPAD_ADLOCATION][MAPAD_ADLOCATION_PINLET]
-            adData = null
-            if (ldata[MAPAD_ADDATA] != null) {
-                adImg = ldata[MAPAD_ADDATA][MAPAD_ADDATA_IMAGE]
-                adUrlLink = ldata[MAPAD_ADDATA][MAPAD_ADDATA_LINK]
-                adPromoTxt = ldata[MAPAD_ADDATA][MAPAD_ADDATA_PROMO]
-                adPromolyr = {"promoTitle": adPromoTxt[0], "promoDesc": adPromoTxt[1], "promoButton": adPromoTxt[2]}
-                adData = {"adImage": adImg, "adPromo": adPromolyr}
+            let granted = true
+            if (blacklist.length >= 1) {
+                for (i=0;i<blacklist.length;i++) {
+                    if (ldata[MAPAD_ADNAME].search(blacklist[i]) != -1) {
+                        granted = false
+                        break
+                    }
+                }
             }
-            ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId,"hash":hash_md5(adName+adBaseSite+adPlace)})
-            adId++
+            if (placeblacklist.length >= 1) {
+                for (i=0;i<placeblacklist.length;i++) {
+                    if (ldata[MAPAD_ADMAPPLACE] == placeblacklist[i]) {
+                        granted = false
+                        break
+                    }
+                }
+            }
+            if (granted == true) {
+                adPlace = ldata[MAPAD_ADMAPPLACE]
+                adName = ldata[MAPAD_ADNAME]
+                adLocData = [ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLAT].toString(), ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLNG].toString()]
+                adUrlLink = ldata[MAPAD_ADLINKS][MAPAD_ADCLICK]
+                adBaseSite = ldata[MAPAD_ADSITE][MAPAD_ADSITE_BASESITE]
+                adWtaP = ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTA]
+                adWta = adWtaP + ". " + ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTAARRAY].join(" ")
+                adPinlet = ldata[MAPAD_ADLOCATION][MAPAD_ADLOCATION_PINLET]
+                adData = null
+                if (ldata[MAPAD_ADDATA] != null) {
+                    adImg = ldata[MAPAD_ADDATA][MAPAD_ADDATA_IMAGE]
+                    adUrlLink = ldata[MAPAD_ADDATA][MAPAD_ADDATA_LINK]
+                    adPromoTxt = ldata[MAPAD_ADDATA][MAPAD_ADDATA_PROMO]
+                    adPromolyr = {"promoTitle": adPromoTxt[0], "promoDesc": adPromoTxt[1], "promoButton": adPromoTxt[2]}
+                    adData = {"adImage": adImg, "adPromo": adPromolyr}
+                }
+                ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId,"hash":hash_md5(adName+adBaseSite+adPlace)})
+                adId++
+            } else {
+                console.log(ldata[MAPAD_ADNAME]+": "+ldata[MAPAD_ADMAPPLACE]+" has been excluded! This ad will not be included in LPAds!")
+            }
         })
     } else {
         ret.noAds = true
     }
+    if (ret.noAds == false && ret.mapAds.length < 1) ret.noAds = true
     return ret
 }
