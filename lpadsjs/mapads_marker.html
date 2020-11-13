@@ -52,6 +52,7 @@
                 var overrides = null;
                 var blacklist = [];
                 var placeBlacklist = [];
+                var adParseFunction = null;
 
                 function selLPUrl(uri) {
                     let rand = Math.floor(Math.random() * 1000000000000); 
@@ -75,6 +76,17 @@
                     }
                     if (up.get('override') != null) {
                         overrides = JSON.parse(window.atob(up.get('override'))).overrides
+                    }
+                    try {
+                        if (up.get('event') != null) {
+                            adParseFunction = eval("("+window.atob(up.get('event'))+")")
+                            if (({}).toString.call(adParseFunction) != '[object Function]') {
+                                adParseFunction = null
+                                throw new Error("Event is not a function.")
+                            }
+                        }
+                    } catch (e) {
+                        console.warn("Error paring the event script: " + e)
                     }
                 } catch (e) {
 
@@ -388,6 +400,12 @@
                         lp = ad.adLocation.split(", ")
                         tg = searchAPIURL.replace("(query)", lp[1] + "," + lp[0])
                         var atwn = null
+                        if (adParseFunction != null) {
+                            resp = adParseFunction(JSON.parse(JSON.stringify(ad)))
+                            if (resp != null) {
+                                ad = JSON.parse(JSON.stringify(resp))
+                            }
+                        }
                         if (overrides != null) {
                             fixHash(ad)
                             for (c = 0; c<overrides.length; c++) {
