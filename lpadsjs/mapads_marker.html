@@ -76,7 +76,7 @@
                         addLayer = true
                     }
                     if (up.get('override') != null) {
-                        overrides = JSON.parse(window.atob(up.get('override'))).overrides
+                        overrides = JSON.parse(decodeURIComponent(escape(window.atob(window.atob(up.get('override')))))).overrides
                     }
                     try {
                         if (up.get('event') != null) {

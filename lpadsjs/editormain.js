@@ -24,7 +24,7 @@ if (up.get("cors") == "true") {
 
 if (up.get("override") != null) {
     try {
-        repdata = JSON.parse(window.atob(up.get("override"))).overrides
+        repdata = JSON.parse(decodeURIComponent(escape(window.atob(window.atob(up.get('override')))))).overrides
     } catch (e) {
 
     }
@@ -237,7 +237,7 @@ start()
 
 document.getElementById("save").onclick = function() {
     if (repdata.length > 0) {
-        window.location = "mapads_marker.html?localads=true&lat="+up.get("lat")+"&lng="+up.get("lng")+"&override="+window.btoa(JSON.stringify({"overrides": repdata}))
+        window.location = "mapads_marker.html?localads=true&lat="+up.get("lat")+"&lng="+up.get("lng")+"&override="+window.btoa(unescape(encodeURIComponent(JSON.stringify({"overrides": repdata}))))
     }
 }
 
