@@ -511,7 +511,7 @@
                             } catch (e) {
                                 return
                             }
-                            adResp = parseAds(mkpos.lat, mkpos.lng, blacklist, placeBlacklist)
+                            adResp = parseAds(mkpos.lat, mkpos.lng, adProto, blacklist, placeBlacklist)
                             if (adResp.noAds == true) {
                                 console.warn("No ads found on "+mkpos.lat+", "+mkpos.lng+"!")
                             } else {
