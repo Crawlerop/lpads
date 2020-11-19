@@ -225,7 +225,7 @@ function parseAds(lat, lng, mapad, blacklist=[], placeblacklist=[]) {
                 ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId,"hash":hash_md5(adName+adBaseSite+adPlace)})
                 adId++
             } else {
-                if (!tofar) {
+                if (!toofar) {
                     console.log(ldata[MAPAD_ADNAME]+": "+ldata[MAPAD_ADMAPPLACE]+" has been excluded! This ad will not be included in LPAds!")
                 } else {
                     console.log(ldata[MAPAD_ADNAME]+": "+ldata[MAPAD_ADMAPPLACE]+" is too far for ads!")
