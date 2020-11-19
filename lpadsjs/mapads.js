@@ -180,7 +180,7 @@ function parseAds(lat, lng, mapad, blacklist=[], placeblacklist=[]) {
     var ret = {"noAds": false, "mapAds": null}
     var listdata = mapad[MAPAD_ADLIST]
     adId = 0
-    if (listdata !== null) {
+    if (typeof listdata !== "undefined" && listdata !== null) {
         ret.mapAds = []
         listdata.forEach(function(ldata){
             let granted = true
