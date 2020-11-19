@@ -201,7 +201,7 @@ function parseAds(lat, lng, mapad, blacklist=[], placeblacklist=[]) {
                     }
                 }
             }
-            if (distance(lat, lng, ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLAT], ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLNG], "K") > 250) {
+            if (distance(lat, lng, ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLAT], ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLNG], "K") > 10) {
                 granted = false
                 toofar = true
             }
