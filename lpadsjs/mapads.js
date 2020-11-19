@@ -154,7 +154,29 @@ d = add(d, oldd);
 return rhex(a) + rhex(b) + rhex(c) + rhex(d);
 }
 
-function parseAds(mapad, blacklist=[], placeblacklist=[]) {
+function distance(lat1, lon1, lat2, lon2, unit) {
+    if ((lat1 == lat2) && (lon1 == lon2)) {
+        return 0;
+    }
+    else {
+        var radlat1 = Math.PI * lat1/180;
+        var radlat2 = Math.PI * lat2/180;
+        var theta = lon1-lon2;
+        var radtheta = Math.PI * theta/180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+            dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = dist * 180/Math.PI;
+        dist = dist * 60 * 1.1515;
+        if (unit=="K") { dist = dist * 1.609344 }
+        if (unit=="N") { dist = dist * 0.8684 }
+        return dist;
+    }
+}
+
+function parseAds(lat, lng, mapad, blacklist=[], placeblacklist=[]) {
     var ret = {"noAds": false, "mapAds": null}
     var listdata = mapad[MAPAD_ADLIST]
     adId = 0
@@ -162,6 +184,7 @@ function parseAds(mapad, blacklist=[], placeblacklist=[]) {
         ret.mapAds = []
         listdata.forEach(function(ldata){
             let granted = true
+            let toofar = false
             if (blacklist.length >= 1) {
                 for (i=0;i<blacklist.length;i++) {
                     if (ldata[MAPAD_ADNAME].search(blacklist[i]) != -1) {
@@ -177,6 +200,10 @@ function parseAds(mapad, blacklist=[], placeblacklist=[]) {
                         break
                     }
                 }
+            }
+            if (distance(lat, lng, ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLAT], ldata[MAPAD_ADLOCATION][MAPAD_ADLL][MAPAD_ADLOCATIONLNG]) > 250) {
+                granted = false
+                toofar = true
             }
             if (granted == true) {
                 adPlace = ldata[MAPAD_ADMAPPLACE]
@@ -198,7 +225,11 @@ function parseAds(mapad, blacklist=[], placeblacklist=[]) {
                 ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId,"hash":hash_md5(adName+adBaseSite+adPlace)})
                 adId++
             } else {
-                console.log(ldata[MAPAD_ADNAME]+": "+ldata[MAPAD_ADMAPPLACE]+" has been excluded! This ad will not be included in LPAds!")
+                if (!tofar) {
+                    console.log(ldata[MAPAD_ADNAME]+": "+ldata[MAPAD_ADMAPPLACE]+" has been excluded! This ad will not be included in LPAds!")
+                } else {
+                    console.log(ldata[MAPAD_ADNAME]+": "+ldata[MAPAD_ADMAPPLACE]+" is too far for ads!")
+                }
             }
         })
     } else {

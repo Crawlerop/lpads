@@ -198,7 +198,7 @@ function start2() {
             } catch (e) {
                 return
             }
-            adResp = parseAds(adProto, blacklist, placeBlacklist)
+            adResp = parseAds(parseFloat(up.get("lat")), parseFloat(up.get("lng")), adProto, blacklist, placeBlacklist)
             if (adResp.noAds == true) {
                 console.warn("No ads found on "+up.get('lat')+", "+up.get('lng')+"!")
                 setTimeout(start2, 200)

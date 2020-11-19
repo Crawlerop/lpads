@@ -6,12 +6,12 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
             <title>MapAds demo</title>
-            <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" crossorigin=""/>
-            <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js" crossorigin=""></script>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
+            <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
             <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
-            <script src="./mapads.js" crossorigin=""></script>
+            <script src="./mapads.js"></script>
             <style>
                 body {
                     padding: 0;
@@ -511,7 +511,7 @@
                             } catch (e) {
                                 return
                             }
-                            adResp = parseAds(adProto, blacklist, placeBlacklist)
+                            adResp = parseAds(mkpos.lat, mkpos.lng, blacklist, placeBlacklist)
                             if (adResp.noAds == true) {
                                 console.warn("No ads found on "+mkpos.lat+", "+mkpos.lng+"!")
                             } else {
@@ -549,7 +549,7 @@
                             } catch (e) {
                                 return
                             }
-                            adResp = parseAds(adProto, blacklist, placeBlacklist)
+                            adResp = parseAds(pos.lat, pos.lng, adProto, blacklist, placeBlacklist)
                             if (adResp.noAds == true) {
                                 console.warn("No ads found on "+pos.lat+", "+pos.lng+"!")
                             } else {
@@ -579,7 +579,7 @@
                         } catch (e) {
                              return
                         }
-                        adResp = parseAds(adProto, blacklist, placeBlacklist)
+                        adResp = parseAds(parseFloat(start[0]), parseFloat(start[1]), adProto, blacklist, placeBlacklist)
                         if (adResp.noAds == true) {
                             console.warn("No ads found on "+start[0]+", "+start[1]+"!")
                         } else {
@@ -625,7 +625,7 @@
                             } catch (e) {
                                 return
                             }
-                            adResp = parseAds(adProto, blacklist, placeBlacklist)
+                            adResp = parseAds(pos.lat, pos.lng, adProto, blacklist, placeBlacklist)
                             if (adResp.noAds == true) {
                                 console.warn("No ads found on "+pos.lat+", "+pos.lng+"!")
                                 if (searching) {dosearch()}
