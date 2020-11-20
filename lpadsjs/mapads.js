@@ -3,6 +3,9 @@ var MAPAD_ADMAPPLACE = MAPAD_ADLIST
 var MAPAD_ADNAME = 1
 var MAPAD_ADLOCATION = 2
 var MAPAD_ADLOCATION_PINLET = MAPAD_ADNAME
+var MAPAD_ADLOCATION_PINLET_LEGACY = MAPAD_ADLOCATION
+var MAPAD_ADLOCATION_PINLET_LEGACY_HI = MAPAD_ADNAME
+var MAPAD_ADLOCATION_PINLET_LEGACY_IMG = MAPAD_ADLIST
 var MAPAD_ADLOCATIONLAT = MAPAD_ADLOCATION
 var MAPAD_ADLOCATIONLNG = 3
 var MAPAD_ADDATA = MAPAD_ADLOCATIONLNG
@@ -214,6 +217,10 @@ function parseAds(lat, lng, mapad, blacklist=[], placeblacklist=[]) {
                 adWtaP = ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTA]
                 adWta = adWtaP + ". " + ldata[MAPAD_ADSITE][MAPAD_ADSITE_WTAARRAY].join(" ")
                 adPinlet = ldata[MAPAD_ADLOCATION][MAPAD_ADLOCATION_PINLET]
+                if (adPinlet == null && ldata[MAPAD_ADLOCATION][MAPAD_ADLOCATION_PINLET_LEGACY] != null) { /* LPAds before smart campaigns doesn't have this feature */
+                
+                    adPinlet = ldata[MAPAD_ADLOCATION][MAPAD_ADLOCATION_PINLET_LEGACY][MAPAD_ADLOCATION_PINLET_LEGACY_HI][MAPAD_ADLOCATION_PINLET_LEGACY_IMG].split("?sqp=")[0]
+                }
                 adData = null
                 if (ldata[MAPAD_ADDATA] != null) {
                     adImg = ldata[MAPAD_ADDATA][MAPAD_ADDATA_IMAGE]
