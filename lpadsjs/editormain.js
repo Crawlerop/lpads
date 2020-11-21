@@ -210,7 +210,9 @@ function start2() {
                     adData.forEach(function(d){
                         ovr = findOverride(d)
                         if (ovr != -1) {
-                            newData.push(jsonCopy(repdata[ovr].new)) 
+                            let dt = jsonCopy(repdata[ovr].new)
+                            dt.id = d.id
+                            newData.push(dt) 
                             console.log("Override found!")           
                         } else {
                             newData.push(jsonCopy(d))
