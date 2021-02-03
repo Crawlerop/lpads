@@ -77,9 +77,9 @@
                     }
                     if (up.get('override') != null) {
                         try {
-                            overrides = JSON.parse(decodeURIComponent(escape(window.atob(up.get('override'))))).overrides
+                            overrides = JSON.parse(decodeURIComponent(escape(window.atob(up.get('override').replace(" ","+"))))).overrides
                         } catch (e) {
-                            overrides = JSON.parse(window.atob(up.get('override'))).overrides
+                            overrides = JSON.parse(window.atob(up.get('override').replace(" ","+"))).overrides
                         }
                     }
                     try {
