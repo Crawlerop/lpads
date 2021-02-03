@@ -27,7 +27,7 @@ if (up.get("override") != null) {
         repdata = JSON.parse(decodeURIComponent(escape(window.atob(up.get('override').replace(" ","+"))))).overrides
     } catch (e) {
         try {
-            repdata = JSON.parse(window.atob(up.get('override').replace(" ","+")).overrides
+            repdata = JSON.parse(window.atob(up.get('override').replace(" ","+"))).overrides
         } catch (e) {
 
         }
