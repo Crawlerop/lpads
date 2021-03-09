@@ -48,6 +48,8 @@
                 var dist = 1;
                 var cors = false;
                 var searchAPIURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1";
+                var searchAPIURLNominatim = "https://nominatim.openstreetmap.org/reverse?lat=(lat)&lon=(long)&format=jsonv2";
+                var searchAPIURLBing = "http://dev.virtualearth.net/REST/v1/Locations/(query)?o=json&key=AngXT6Kt9tQtmoGORNVnfY-H_W8CSkM2mb13SrDwLZ43mNaKhD5zpupeQX9uxYjo";
                 var lpadURL = "https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d(dist)!2d(long)!3d(lat)!2m0!3m2!1i32767!2i32767!4f14!5m2!3b0!5e11"
                 var overrides = null;
                 var blacklist = [];
@@ -429,7 +431,21 @@
                 function loadPins(adData) {
                     adData.forEach(function(ad) {
                         lp = ad.adLocation.split(", ")
-                        tg = searchAPIURL.replace("(query)", lp[1] + "," + lp[0])
+                        switch (up.get("geocoder")) {
+                        	case "nominatim":
+                        		tg = searchAPIURLNominatim.replace("(lat)", lp[0]).replace("(long)", lp[1])
+                        		break
+                        		
+                        	case "bing":
+                        		tg = searchAPIURLBing.replace("(query)", lp[0] + "," + lp[1])
+                        		break	
+                        		
+                        	case "mapbox":
+                        	default:
+                        		tg = searchAPIURL.replace("(query)", lp[1] + "," + lp[0])
+                        		break
+                        		
+                       	}
                         var atwn = null
                         if (adParseFunction != null) {
                             resp = adParseFunction(JSON.parse(JSON.stringify(ad)))
@@ -465,7 +481,20 @@
                             findloc._currentState.onClick = function(){return;}
                             asyncRequest(tg, function(rt){
                                 m = setupMarker(JSON.parse(JSON.stringify(ad)))  
-                                adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).features[0].place_name)
+                                switch (up.get("geocoder")) {
+                                	case "nominatim":
+                                		adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).display_name)
+                                		break                                
+                                
+                                	case "bing":
+                                		adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).resourceSets[0].resources[0].name)
+                                		break
+                                
+                                	case "mapbox":
+                                	default:
+                                		adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).features[0].place_name)
+                                		break
+                                }
                                 m.bindPopup(adTextData)
                                 m.addTo(data)
                             })
