@@ -352,7 +352,7 @@
                         }
                     }
                     xhr4.onerror = function(e) {
-                        if (err != null) {
+                        if (e != null) {
                             asyncPayload[reqid].asError(e)
                         }
                         onSearch = false
