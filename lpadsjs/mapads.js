@@ -10,8 +10,9 @@ var MAPAD_ADLOCATIONLAT = MAPAD_ADLOCATION
 var MAPAD_ADLOCATIONLNG = 3
 var MAPAD_ADDATA = MAPAD_ADLOCATIONLNG
 var MAPAD_ADDATA_IMAGE = MAPAD_ADLIST
+var MAPAD_ADDATA_LTOOLTIP = 5
 var MAPAD_ADDATA_LINK = 4
-var MAPAD_ADDATA_BASESITE = 5
+var MAPAD_ADDATA_BASESITE = MAPAD_ADDATA_LTOOLTIP
 var MAPAD_ADDATA_PROMO = 7
 var MAPAD_ADLL = MAPAD_ADLIST
 var MAPAD_ADLINKS = MAPAD_ADDATA_LINK
@@ -227,7 +228,7 @@ function parseAds(lat, lng, mapad, blacklist=[], placeblacklist=[]) {
                     adUrlLink = ldata[MAPAD_ADDATA][MAPAD_ADDATA_LINK]
                     adPromoTxt = ldata[MAPAD_ADDATA][MAPAD_ADDATA_PROMO]
                     adPromolyr = {"promoTitle": adPromoTxt[0], "promoDesc": adPromoTxt[1], "promoButton": adPromoTxt[2]}
-                    adData = {"adImage": adImg, "adPromo": adPromolyr}
+                    adData = {"adImage": adImg, "adPromo": adPromolyr, "toolTip": ldata[MAPAD_ADDATA][MAPAD_ADDATA_LTOOLTIP]}
                 }
                 ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId,"hash":hash_md5(adName+adBaseSite+adPlace)})
                 adId++
