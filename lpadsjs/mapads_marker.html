@@ -398,7 +398,7 @@
                         adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.adSite+"</a>"
                         adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+ld[0]+"&lng="+ld[1]+"\">PassiveAssist</a>"
                     } else {
-                    	if (!ad.adPinImage.startsWith(ad.promoData.adImage)) {
+                    	if (!ad.promoData.adImage || !ad.adPinImage.startsWith(ad.promoData.adImage)) {
                             adTextData = "<center><img src=\""+ad.promoData.adImage+"\" width=128></center>"
                         } else {
                             adTextData = ""
