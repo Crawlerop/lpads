@@ -393,12 +393,17 @@
                     ld = ad.adLocation.split(", ")
                     adTextData = "<h1>"+ad.adName+"</h1>"
                     if (ad.promoData == null) {
-                        adTextData += "In: <b>(LocationName)</b><br>"
+                        adTextData += "In: <b>(LocationName)</b>"
                         adTextData += "Why: <b>"+ad.adWhy+"</b>"
                         adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.adSite+"</a>"
                         adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+ld[0]+"&lng="+ld[1]+"\">PassiveAssist</a>"
                     } else {
-                        adTextData = "<h1>"+ad.promoData.adPromo.promoTitle+"</h1>"
+                    	if (!ad.adPinImage.startsWith(ad.promoData.adImage)) {
+                            adTextData = "<center><img src=\""+ad.promoData.adImage+"\" width=128></center>"
+                        } else {
+                            adTextData = ""
+                        }
+                        adTextData += "<h1>"+ad.promoData.adPromo.promoTitle+"</h1>"                        
                         adTextData += "<h2>"+ad.adName+"</h2>"
                         adTextData += "In: <b>(LocationName)</b><br>"
                         adTextData += "<h3>"+ad.promoData.adPromo.promoDesc+"</h3>"
