@@ -223,14 +223,19 @@ function parseAds(lat, lng, mapad, blacklist=[], placeblacklist=[]) {
                     adPinlet = ldata[MAPAD_ADLOCATION][MAPAD_ADLOCATION_PINLET_LEGACY][MAPAD_ADLOCATION_PINLET_LEGACY_HI][MAPAD_ADLOCATION_PINLET_LEGACY_IMG].split("?sqp=")[0]
                 }
                 adData = null
+                notes = null
                 if (ldata[MAPAD_ADDATA] != null) {
                     adImg = ldata[MAPAD_ADDATA][MAPAD_ADDATA_IMAGE]
                     adUrlLink = ldata[MAPAD_ADDATA][MAPAD_ADDATA_LINK]
                     adPromoTxt = ldata[MAPAD_ADDATA][MAPAD_ADDATA_PROMO]
-                    adPromolyr = {"promoTitle": adPromoTxt[0], "promoDesc": adPromoTxt[1], "promoButton": adPromoTxt[2]}
-                    adData = {"adImage": adImg, "adPromo": adPromolyr, "toolTip": ldata[MAPAD_ADDATA][MAPAD_ADDATA_LTOOLTIP]}
+                    if (adPromoTxt.length >= 3) {
+                    	adPromolyr = {"promoTitle": adPromoTxt[0], "promoDesc": adPromoTxt[1], "promoButton": adPromoTxt[2]}
+                    	adData = {"adImage": adImg, "adPromo": adPromolyr, "toolTip": ldata[MAPAD_ADDATA][MAPAD_ADDATA_LTOOLTIP]}
+                    } else {
+                    	notes = adPromoTxt.join(". ")
+                    }
                 }
-                ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId,"hash":hash_md5(adName+adBaseSite+adPlace)})
+                ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId,"hash":hash_md5(adName+adBaseSite+adPlace),"adNotes":notes})
                 adId++
             } else {
                 if (!toofar) {

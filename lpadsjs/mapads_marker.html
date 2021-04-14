@@ -394,6 +394,9 @@
                     adTextData = "<h1>"+ad.adName+"</h1>"
                     if (ad.promoData == null) {
                         adTextData += "In: <b>(LocationName)</b><br>"
+                        if (ad.adNotes) {
+                        	adTextData += "<b>Secret notes: </b>"+ad.adNotes+"<br>"
+                        }
                         adTextData += "Why: <b>"+ad.adWhy+"</b>"
                         adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.adSite+"</a>"
                         adTextData += "<br><br><a href=\"https://crawlerop.github.io/psassist/js/getmaplace.html?lat="+ld[0]+"&lng="+ld[1]+"\">PassiveAssist</a>"
