@@ -44,6 +44,7 @@
                 var xhr = new XMLHttpRequest()
                 var xhr2 = new XMLHttpRequest()
                 var start = [40.7127837, -74.00594130000002]
+                //var start = [-27.564444, 151.951944] // not used
                 var addLayer = false;
                 var dist = 1;
                 var cors = false;
@@ -147,6 +148,14 @@
                     tileSize: 512,
                     zoomOffset: -1
                 })
+                
+                mdark = L.tileLayer(mburl, {
+                    maxZoom: 21,
+                    attribution: mapboxattr,
+                    id: 'mapbox/dark-v9',
+                    tileSize: 512,
+                    zoomOffset: -1
+                })                
 
                 esrinormal = L.tileLayer('https://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
                     maxZoom: 21,
@@ -236,6 +245,30 @@
                     zoomOffset: 0
                 })
 
+				gmapsnotext = L.tileLayer('https://www.google.com/maps/vt/pb=!1m5!1m4!1i{z}!2i{x}!3i{y}!4i256!2m3!1e0!2sm!3i559283400!3m17!2sen-US!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcy5lOmx8cC52Om9mZg!4e0!5m1!5f4.0', 				{
+                    maxZoom: 21,
+                    attribution: gmapsattr,
+                    id: 'user12435235124125235824592457/ckao1rqf85kh01imwyf5b0pvc',
+                    tileSize: 256,
+                    zoomOffset: 0
+                })
+                
+                gmapsdark = L.tileLayer('https://www.google.com/maps/vt/pb=!1m5!1m4!1i{z}!2i{x}!3i{y}!4i256!2m3!1e0!2sm!3i559283400!3m17!2sen-US!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcy5lOmd8cC5jOiNmZjIxMjEyMSxzLmU6bC50LmZ8cC5jOiNmZjc1NzU3NSxzLmU6bC50LnN8cC5jOiNmZjIxMjEyMSxzLnQ6MXxzLmU6Z3xwLmM6I2ZmNzU3NTc1LHMudDoxN3xzLmU6bC50LmZ8cC5jOiNmZjllOWU5ZSxzLnQ6MTl8cy5lOmwudC5mfHAuYzojZmZiZGJkYmQscy50OjJ8cy5lOmwudC5mfHAuYzojZmZiZmJmYmYscy50OjQwfHMuZTpnfHAuYzojZmYxODE4MTgscy50OjQwfHMuZTpsLnQuc3xwLmM6I2ZmMWIxYjFiLHMudDozfHMuZTpnLmZ8cC5jOiNmZjJjMmMyYyxzLnQ6M3xzLmU6bC50LmZ8cC5jOiNmZjhhOGE4YSxzLnQ6NTB8cy5lOmd8cC5jOiNmZjM3MzczNyxzLnQ6NDl8cy5lOmd8cC5jOiNmZjNjM2MzYyxzLnQ6Nzg1fHMuZTpnfHAuYzojZmY0ZTRlNGUscy50OjUxfHMuZTpsLnQuZnxwLmM6I2ZmNjE2MTYxLHMudDo0fHMuZTpsLnQuZnxwLmM6I2ZmNzU3NTc1LHMudDo2fHMuZTpnfHAuYzojZmYwMDAwMDAscy50OjZ8cy5lOmwudC5mfHAuYzojZmYzZDNkM2Q!4e0!5m1!5f4.0', 						{
+                    maxZoom: 21,
+                    attribution: gmapsattr,
+                    id: 'user12435235124125235824592457/ckao1rqf85kh01imwyf5b0pvc',
+                    tileSize: 256,
+                    zoomOffset: 0
+                })
+                
+                gmapsdarknotext = L.tileLayer('https://www.google.com/maps/vt/pb=!1m5!1m4!1i{z}!2i{x}!3i{y}!4i256!2m3!1e0!2sm!3i559283400!3m17!2sen-US!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcy5lOmd8cC5jOiNmZjIxMjEyMSxzLmU6bHxwLnY6b2ZmLHMuZTpsLml8cC52Om9mZixzLmU6bC50LmZ8cC5jOiNmZjc1NzU3NSxzLmU6bC50LnN8cC5jOiNmZjIxMjEyMSxzLnQ6MXxzLmU6Z3xwLmM6I2ZmNzU3NTc1LHMudDoxN3xzLmU6bC50LmZ8cC5jOiNmZjllOWU5ZSxzLnQ6MjF8cC52Om9mZixzLnQ6MTl8cy5lOmwudC5mfHAuYzojZmZiZGJkYmQscy50OjJ8cy5lOmwudC5mfHAuYzojZmY3NTc1NzUscy50OjQwfHMuZTpnfHAuYzojZmYxODE4MTgscy50OjQwfHMuZTpsLnQuZnxwLmM6I2ZmNjE2MTYxLHMudDo0MHxzLmU6bC50LnN8cC5jOiNmZjFiMWIxYixzLnQ6M3xzLmU6Zy5mfHAuYzojZmYyYzJjMmMscy50OjN8cy5lOmwudC5mfHAuYzojZmY4YThhOGEscy50OjUwfHMuZTpnfHAuYzojZmYzNzM3Mzcscy50OjQ5fHMuZTpnfHAuYzojZmYzYzNjM2Mscy50Ojc4NXxzLmU6Z3xwLmM6I2ZmNGU0ZTRlLHMudDo1MXxzLmU6bC50LmZ8cC5jOiNmZjYxNjE2MSxzLnQ6NHxzLmU6bC50LmZ8cC5jOiNmZjc1NzU3NSxzLnQ6NnxzLmU6Z3xwLmM6I2ZmMDAwMDAwLHMudDo2fHMuZTpsLnQuZnxwLmM6I2ZmM2QzZDNk!4e0!5m1!5f4.0', {
+                    maxZoom: 21,
+                    attribution: gmapsattr,
+                    id: 'user12435235124125235824592457/ckao1rqf85kh01imwyf5b0pvc',
+                    tileSize: 256,
+                    zoomOffset: 0
+                })
+
                 esrisatellite = L.tileLayer('https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                     maxZoom: 21,
                     attribution: esriattr,
@@ -291,12 +324,16 @@
                     "Mapbox Normal": normal,
                     "Mapbox Streets": mdefault,
                     "Mapbox Grayscale": mgray,
+                    "Mapbox Dark": mdark,
                     "Google Maps Normal": gmapsnormal,
                     "Google Maps Terrain": gmapstopo,
                     "Google Maps Normal (Better)": gmapsfb,
                     "Google Maps Bold": gmapsbold,
                     "Google Maps Vue": gmapsvue,
                     "Google Maps Grayscale": gmapsgray,
+                    "Google Maps Normal (No Label)": gmapsnotext,
+                    "Google Maps Dark": gmapsdark,
+                    "Google Maps Dark (No Label)": gmapsdarknotext,
                     "OSM": osm,
                     "ESRI Normal": esrinormal,
                     "ESRI Terrain": esriterrain,
