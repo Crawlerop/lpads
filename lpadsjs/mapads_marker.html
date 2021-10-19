@@ -46,7 +46,8 @@
                 var start = [40.7127837, -74.00594130000002]
                 //var start = [-27.564444, 151.951944] // not used
                 var addLayer = false;
-                var dist = 1;
+                var dist = 160000;
+                var dist_modifier = 5.5;
                 var cors = false;
                 var searchAPIURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1";
                 var searchAPIURLNominatim = "https://nominatim.openstreetmap.org/reverse?lat=(lat)&lon=(long)&format=jsonv2";
@@ -557,12 +558,16 @@
                     icon: setupIcon("https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-64.png", [43,42])
                 })
 
+                adRadius = new L.circle(start, {radius: dist/dist_modifier})		
+
                 /*
                 d = new L.marker(start)
                 d.addTo(mymap)
                 */
 
                 adMarker.addTo(data)
+                adRadius.addTo(data)
+
                 adMarker.on("dragstart", function() {
                     if (going == true) {
                         xhr.abort()
@@ -576,6 +581,7 @@
                     }); 
                     pins = []
                     adData = null
+                    adRadius.remove()
                 })
 
                 adMarker.on("dragend", function(ev) {
@@ -583,6 +589,8 @@
                     mkpos = mk.getLatLng()
                     mk.setLatLng(new L.LatLng(mkpos.lat, mkpos.lng),{draggable:'true'})    
                     mymap.panTo(new L.LatLng(mkpos.lat, mkpos.lng))
+                    adRadius = new L.circle(new L.LatLng(mkpos.lat, mkpos.lng), {radius: dist/dist_modifier})	
+                    adRadius.addTo(data)                    	
                     xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", mkpos.lng).replace("(lat)", mkpos.lat)))
                     xhr.onreadystatechange = function() {
                         if (this.readyState == 4) {
