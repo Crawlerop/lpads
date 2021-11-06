@@ -33,20 +33,73 @@
                     bottom:15px;
                     resize:none;
                 }
+
+                /* The Modal (background) */
+                .modal {
+                    display: none; /* Hidden by default */
+                    position: fixed; /* Stay in place */
+                    z-index: 1; /* Sit on top */
+                    padding-top: 25px; /* Location of the box */
+                    left: 0;
+                    top: 0;
+                    width: 100%; /* Full width */
+                    height: 100%; /* Full height */
+                    overflow: auto; /* Enable scroll if needed */
+                    background-color: rgb(0,0,0); /* Fallback color */
+                    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+                }
+
+                /* Modal Content */
+                .modal-content {
+                    background-color: #fefefe;
+                    margin: auto;
+                    padding: 20px;
+                    border: 1px solid #888;
+                    width: 75%;
+
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: larger;
+                }
+
+                /* The Close Button */
+                .close {
+                    color: #aaaaaa;
+                    float: right;
+                    font-size: 28px;
+                    font-weight: bold;
+                }
+
+                .close:hover,
+                .close:focus {
+                    color: #000;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+
+
             </style>
             
         </head>
         <body>
             <noscript>Please enable the javascript for LPAds.js to work!</noscript>
+            <div id="shopping" class="modal">
+                <div class="modal-content">
+                  <span class="close" id="close_button">&times;</span>
+                  <div id="shopping_content"></div>
+                </div>            
+            </div>
             <div id="mapid"></div>
             <script>
                 var searching = false;
+                var s_modal = document.getElementById("shopping")
+                var sc = document.getElementById("shopping_content")
+                var map_data = document.getElementById("mapid")
                 var xhr = new XMLHttpRequest()
                 var xhr2 = new XMLHttpRequest()
                 var start = [40.7127837, -74.00594130000002]
                 //var start = [-27.564444, 151.951944] // not used
                 var addLayer = false;
-                var dist = 160000;
+                var dist = 15000;
                 var dist_modifier = 5.5;
                 var cors = false;
                 var searchAPIURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1";
@@ -63,6 +116,41 @@
                     let rand = Math.floor(Math.random() * 1000000000000); 
                     let rand2 = Math.floor(Math.random() * 1000000000000); 
                     return cors ? uri : "https://api.allorigins.win/raw?hash="+rand.toString()+"&url=" + encodeURIComponent(uri+"!1024m1!1024s"+rand2.toString())
+                }
+
+                function show_shopping_modal(hide) {
+                    if (hide) {
+                        sc.innerHTML = ""
+                        s_modal.style.display = "none"
+                        map_data.style.display = ""
+                        mymap.invalidateSize()
+                    } else {
+                        s_modal.style.display = "block"
+                        map_data.style.display = "none"
+                    }
+                }
+
+                function do_shop_modal(id) {
+                    show_shopping_modal()
+                    setup_shopping_modal(adData[id])
+                }
+
+                document.getElementById("close_button").onclick = () => {
+                    show_shopping_modal(true)
+                }
+
+                function setup_shopping_modal(ad_data) {                    
+                    var mp_data = ad_data.adMarketPlace.items      
+                    var out = `<h2>${ad_data.adName}</h2><br><br>`;              
+                    for (var i=0;i<mp_data.length;i++) {
+                        var m_dat = mp_data[i]               
+                        out += `<img src="${m_dat.item_icon}">  <p>${m_dat.item_name} - ${m_dat.item_price} - <a href="${m_dat.item_buy_link}">Click here to buy</a></p><br><br>`  
+                    }      
+                    var wta_str = ""                    
+                    for (k in ad_data.adMarketPlace.why) {                        
+                        wta_str += `<br>${k} = ${ad_data.adMarketPlace.why[k]}`
+                    }
+                    sc.innerHTML = `<center>${out}<br>Why: <br><b>${wta_str}</b></center><footer><h3 style="text-align: right">Powered by <a href="https://github.com/crawlerop/lpads">lpads</a></h3></footer>`;              
                 }
 
                 try {
@@ -407,7 +495,7 @@
                     })
                 }
 
-                function setupMarker(ad) {
+                function setupMarker(ad, fa_id=0) {
                     m = L.marker(ad.adLocation.split(", "), {title: ad.adName})
                     
                     if (ad.adPinImage != null) {
@@ -434,6 +522,8 @@
                         adTextData += "In: <b>(LocationName)</b><br>"
                         if (ad.adNotes) {
                         	adTextData += "<br><b>Secret notes: </b>"+ad.adNotes+"<br><br>"
+                        } else if (ad.adMarketPlace) {
+                            adTextData += "<br><b><a href=\"javascript:void(do_shop_modal("+fa_id+"))\">View currently sold items</a></b><br><br>"
                         }
                         adTextData += "Why: <b>"+ad.adWhy+"</b>"
                         adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.adSite+"</a>"
@@ -473,6 +563,7 @@
                 }
 
                 function loadPins(adData) {
+                    var fa_index = 0
                     adData.forEach(function(ad) {
                         lp = ad.adLocation.split(", ")
                         switch (up.get("geocoder")) {
@@ -514,7 +605,7 @@
                         }
 
                         if (atwn) {
-                            m = setupMarker(JSON.parse(JSON.stringify(ad)))
+                            m = setupMarker(JSON.parse(JSON.stringify(ad)), fa_index++)
                             adTextData = adTextData.replace("(LocationName)", atwn)
                             m.bindPopup(adTextData)
                             m.addTo(data)
@@ -524,7 +615,7 @@
                             adMarker.on('click', function(){return;})
                             findloc._currentState.onClick = function(){return;}
                             asyncRequest(tg, function(rt){
-                                m = setupMarker(JSON.parse(JSON.stringify(ad)))  
+                                m = setupMarker(JSON.parse(JSON.stringify(ad)), fa_index++)  
                                 switch (up.get("geocoder")) {
                                 	case "nominatim":
                                 		adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).display_name)
@@ -542,7 +633,7 @@
                                 m.bindPopup(adTextData)
                                 m.addTo(data)
                             })
-                        }
+                        }                        
                     })
                     onGeocode = true
                     doAsync(0, function(){console.log("Geocode Done!"); findloc._currentState.onClick = dosearch; adMarker.on('click', clk); adMarker.dragging.enable(); onGeocode=false; asyncPayload=[]}, function(){if (!onGeocode) { console.log("Geocode Aborted!"); } return onGeocode}, 75)

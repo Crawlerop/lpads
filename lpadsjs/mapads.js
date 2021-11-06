@@ -20,8 +20,84 @@ var MAPAD_ADCLICK = MAPAD_ADNAME
 var MAPAD_ADSITE = MAPAD_ADDATA_BASESITE
 var MAPAD_ADSITE_BASESITE = MAPAD_ADLL
 var MAPAD_ADSITE_WTA = MAPAD_ADNAME
+var MAPAD_ADSITE_WTA_SITE = MAPAD_ADLIST
 var MAPAD_ADSITE_WTAARRAY = MAPAD_ADLOCATIONLNG
+var MAPAD_ADSITE_WTA_ADSETTINGS = MAPAD_ADDATA_LINK 
+var MAPAD_ADSITE_WTA_PROVIDER = MAPAD_ADDATA_LTOOLTIP
 
+var MAPAD_ADMARKETPLACE = 9
+
+var MAPAD_ADMARKETPLACE_WTA = MAPAD_ADLIST
+var MAPAD_ADMARKETPLACE_WTA_DATA = MAPAD_ADLOCATION
+var MAPAD_ADMARKETPLACE_WTA_INDEX = MAPAD_ADLIST
+
+var MAPAD_ADMARKETPLACE_ITEMS = MAPAD_ADNAME
+var MAPAD_ADMARKETPLACE_ITEMS_NAME = MAPAD_ADLIST
+var MAPAD_ADMARKETPLACE_ITEMS_ICON = MAPAD_ADNAME
+var MAPAD_ADMARKETPLACE_ITEMS_LINK = MAPAD_ADLOCATION
+var MAPAD_ADMARKETPLACE_ITEMS_PRICE = MAPAD_ADLOCATIONLNG
+
+var MAPAD_ADMARKETPLACE_ITEMS_EXTRADATA = MAPAD_ADDATA_LINK
+
+var MAPAD_ADMARKETPLACE_ITEMS_REVIEWS = MAPAD_ADDATA_LTOOLTIP
+var MAPAD_ADMARKETPLACE_ITEMS_REVIEWS_SCORE = MAPAD_ADLIST
+var MAPAD_ADMARKETPLACE_ITEMS_REVIEWS_COUNT = MAPAD_ADNAME
+var MAPAD_ADMARKETPLACE_ITEMS_REVIEWS_DESCRIPTION = MAPAD_ADLOCATION
+
+var MAPAD_ADMARKETPLACE_ITEMS_SUBSCRIPTION = 6
+var MAPAD_ADMARKETPLACE_ITEMS_SUBSCRIPTION_DESCRIPTION = 11
+
+var REVIEW_UNKNOWN_SCORE = {
+    "score_min":-1.0,
+    "score_max":-1.0,
+    "description": "No reviews available",
+    "color": "#808080"
+}
+
+var REVIEW_DESCRIPTIONS = [
+    {
+        "score_min":0.0,
+        "score_max":1.5,
+        "description": "Extremely negative reviews",
+        "color": "#800000"
+    },
+    {
+        "score_min":1.5,
+        "score_max":2.75,
+        "description": "Mostly negative reviews",
+        "color": "#ff0000"
+    },
+    {
+        "score_min":2.75,
+        "score_max":3.5,
+        "description": "Mixed reviews",
+        "color": "#ffff00"
+    },
+    {
+        "score_min":3.5,
+        "score_max":4.75,
+        "description": "Mostly positive reviews",
+        "color": "#00ff00"
+    },
+    {
+        "score_min":4.7,
+        "score_max":99.0,
+        "description": "Extremely positive reviews",
+        "color": "#d4af37"
+    },    
+]
+
+function score_get_description(score) {   
+    var SCORE_OUTCOME = REVIEW_UNKNOWN_SCORE 
+    for (var scores = 0; scores<REVIEW_DESCRIPTIONS.length; scores++) {
+        const score_data = REVIEW_DESCRIPTIONS[scores]
+        if (score >= score_data.score_min && score < score_data.score_max) {
+            SCORE_OUTCOME = score_data
+            break
+        }
+    }
+    return {"description":SCORE_OUTCOME.description, "color":SCORE_OUTCOME.color}
+}
 
 var hex_chr = "0123456789abcdef";
 function rhex(num)
@@ -235,7 +311,36 @@ function parseAds(lat, lng, mapad, blacklist=[], placeblacklist=[]) {
                     	notes = adPromoTxt.join(". ")
                     }
                 }
-                ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId,"hash":hash_md5(adName+adBaseSite+adPlace),"adNotes":notes})
+                adMarketPlace = null
+                if (ldata[MAPAD_ADMARKETPLACE] != null && ldata[MAPAD_ADMARKETPLACE] != undefined) {
+                    adMarketPlace = {"why":{},"items":[]}                    
+                    mp_items = ldata[MAPAD_ADMARKETPLACE][MAPAD_ADMARKETPLACE_ITEMS]
+                    wta_data = ldata[MAPAD_ADMARKETPLACE][MAPAD_ADMARKETPLACE_WTA][MAPAD_ADMARKETPLACE_WTA_DATA]
+                    for (i=0;i<wta_data.length;i++) {
+                        wta_info = wta_data[i][MAPAD_ADMARKETPLACE_WTA_INDEX]
+                        adMarketPlace.why[wta_info[MAPAD_ADSITE_WTA_SITE]] = wta_info[MAPAD_ADSITE_WTAARRAY].join(" ")
+                    }
+                    for (i=0;i<mp_items.length;i++) {
+                        mp_item = mp_items[i]
+                        item_data = {"item_name":mp_item[MAPAD_ADMARKETPLACE_ITEMS_NAME], "item_icon":mp_item[MAPAD_ADMARKETPLACE_ITEMS_ICON], "item_price":mp_item[MAPAD_ADMARKETPLACE_ITEMS_PRICE], "item_buy_link":mp_item[MAPAD_ADMARKETPLACE_ITEMS_LINK], "extradata": {}}
+                        reviews = mp_item[MAPAD_ADMARKETPLACE_ITEMS_REVIEWS]
+                        if (reviews) {
+                            item_data.extradata.review = {}
+                            item_data.extradata.review.score = reviews[MAPAD_ADMARKETPLACE_ITEMS_REVIEWS_SCORE]
+                            item_data.extradata.review.reviewers = reviews[MAPAD_ADMARKETPLACE_ITEMS_REVIEWS_COUNT]
+                            item_data.extradata.review.description = reviews[MAPAD_ADMARKETPLACE_ITEMS_REVIEWS_DESCRIPTION]
+                        }
+                        subscriptions = mp_item[MAPAD_ADMARKETPLACE_ITEMS_SUBSCRIPTION]
+                        if (subscriptions) {
+                            item_data.extradata.subscription = {}
+                            item_data.extradata.subscription.description = mp_item[MAPAD_ADMARKETPLACE_ITEMS_SUBSCRIPTION_DESCRIPTION]
+                            item_data.extradata.subscription.price = mp_item[MAPAD_ADMARKETPLACE_ITEMS_SUBSCRIPTION]
+                            item_data.item_price = `${item_data.item_price}, ${mp_item[MAPAD_ADMARKETPLACE_ITEMS_SUBSCRIPTION]}`
+                        }
+                        adMarketPlace.items.push(item_data)
+                    }                    
+                }
+                ret.mapAds.push({"adName":adName,"adPlace":adPlace,"adLocation":adLocData.join(", "),"adLink":adUrlLink,"adSite":adBaseSite,"adWhy":adWta,"promoData":adData,"adPinImage":adPinlet,"id":adId,"hash":hash_md5(adName+adBaseSite+adPlace),"adNotes":notes,"adMarketPlace":adMarketPlace})
                 adId++
             } else {
                 if (!toofar) {
