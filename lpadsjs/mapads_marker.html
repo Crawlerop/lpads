@@ -97,10 +97,10 @@
                 var xhr = new XMLHttpRequest()
                 var xhr2 = new XMLHttpRequest()
                 var start = [40.7127837, -74.00594130000002]
-                //var start = [-27.564444, 151.951944] // not used
+		// if (wrapper) start = [-27.564444, 151.951944]
                 var addLayer = false;
                 var dist = 15000;
-                var dist_modifier = 5.5;
+                var dist_modifier = 1;
                 var cors = false;
                 var searchAPIURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1";
                 var searchAPIURLNominatim = "https://nominatim.openstreetmap.org/reverse?lat=(lat)&lon=(long)&format=jsonv2";
