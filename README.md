@@ -56,5 +56,4 @@ function (ad) {
 It only override the ad if the resulting event function is NOT null.
 
 ## Tracking
-Locational ads depends on your interests. So ads may very on different account you are using.  
-You can opt out these ads by visiting [adssettings.google.com](https://adssettings.google.com).
+the example LPAds doesn't use any cookies that was passed into the Maps' LPAds requests, so no personalized ads will appear in this app.  
