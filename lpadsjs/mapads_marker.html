@@ -566,19 +566,19 @@
                     var fa_index = 0
                     adData.forEach(function(ad) {
                         lp = ad.adLocation.split(", ")
-                        switch (up.get("geocoder")) {
-                        	case "nominatim":
-                        		tg = searchAPIURLNominatim.replace("(lat)", lp[0]).replace("(long)", lp[1])
-                        		break
-                        		
+                        switch (up.get("geocoder")) {                        		
                         	case "bing":
                         		tg = searchAPIURLBing.replace("(query)", lp[0] + "," + lp[1])
                         		break	
                         		
-                        	case "mapbox":
-                        	default:
+                        	case "mapbox":                        	
                         		tg = searchAPIURL.replace("(query)", lp[1] + "," + lp[0])
                         		break
+
+                            case "nominatim":
+                            default:
+                        		tg = searchAPIURLNominatim.replace("(lat)", lp[0]).replace("(long)", lp[1])
+                        		break                                
                         		
                        	}
                         var atwn = null
@@ -616,19 +616,23 @@
                             findloc._currentState.onClick = function(){return;}
                             asyncRequest(tg, function(rt){
                                 m = setupMarker(JSON.parse(JSON.stringify(ad)), fa_index++)  
-                                switch (up.get("geocoder")) {
-                                	case "nominatim":
-                                		adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).display_name)
-                                		break                                
-                                
+                                switch (up.get("geocoder")) {                                                            
                                 	case "bing":
                                 		adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).resourceSets[0].resources[0].name)
                                 		break
                                 
-                                	case "mapbox":
-                                	default:
+                                	case "mapbox":                                	
                                 		adTextData = adTextData.replace("(LocationName)", JSON.parse(rt).features[0].place_name)
                                 		break
+
+                                    case "nominatim":
+                                    default:
+                                        let osmdata = JSON.parse(rt);
+                                		adTextData = adTextData.replace("(LocationName)", osmdata.display_name)
+                                        if (up.get("parsetemplate") == "true") {
+                                            adTextData = adTextData.replace(/\{LOCATION\(City\)\}/g, osmdata.address.city).replace(/\{LOCATION\(State\)\}/g, osmdata.address.state).replace(/\{LOCATION\(Suburb\)\}/g, osmdata.address.suburb).replace(/\{LOCATION\(Country\)\}/g, osmdata.address.country)
+                                        }
+                                		break                                           
                                 }
                                 m.bindPopup(adTextData)
                                 m.addTo(data)
