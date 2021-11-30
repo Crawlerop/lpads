@@ -55,5 +55,8 @@ function (ad) {
 
 It only override the ad if the resulting event function is NOT null.
 
+## Geocoder-specific features
+Nominatim only: ability to parse location insertion template embedded on locational ads, enabled by appending parsetemplate=true to the navigation bar.
+
 ## Tracking
 the example LPAds doesn't use any cookies that was passed into the Maps' LPAds requests, so no personalized ads will appear in this app.  
