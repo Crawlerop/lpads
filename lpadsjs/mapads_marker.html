@@ -175,7 +175,10 @@
                             overrides = JSON.parse(window.atob(up.get('override').replace(" ","+"))).overrides
                         }
                     }
-                    if (up.get('osm_zoom') != null) nominatim_zoom = parseFloat(up.get('osm_zoom'));
+                    if (up.get('osm_zoom') != null) {
+                        nominatim_zoom = parseFloat(up.get('osm_zoom'));
+                        searchAPIURLNominatim = "https://nominatim.openstreetmap.org/reverse?lat=(lat)&lon=(long)&format=jsonv2&zoom="+nominatim_zoom;
+                    }
                     try {
                         if (up.get('event') != null) {
                             adParseFunction = eval("("+window.atob(up.get('event'))+")")
