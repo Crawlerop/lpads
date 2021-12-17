@@ -102,8 +102,9 @@
                 var dist = 15000;
                 var dist_modifier = 1;
                 var cors = false;
+                var nominatim_zoom = 17;
                 var searchAPIURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1";
-                var searchAPIURLNominatim = "https://nominatim.openstreetmap.org/reverse?lat=(lat)&lon=(long)&format=jsonv2";
+                var searchAPIURLNominatim = "https://nominatim.openstreetmap.org/reverse?lat=(lat)&lon=(long)&format=jsonv2&zoom="+nominatim_zoom;
                 var searchAPIURLBing = "https://dev.virtualearth.net/REST/v1/Locations/(query)?o=json&key=AngXT6Kt9tQtmoGORNVnfY-H_W8CSkM2mb13SrDwLZ43mNaKhD5zpupeQX9uxYjo";
                 var lpadURL = "https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d(dist)!2d(long)!3d(lat)!2m0!3m2!1i32767!2i32767!4f14!5m2!3b0!5e11"
                 var overrides = null;
@@ -174,6 +175,7 @@
                             overrides = JSON.parse(window.atob(up.get('override').replace(" ","+"))).overrides
                         }
                     }
+                    if (up.get('osm_zoom') != null) nominatim_zoom = parseFloat(up.get('osm_zoom'));
                     try {
                         if (up.get('event') != null) {
                             adParseFunction = eval("("+window.atob(up.get('event'))+")")
