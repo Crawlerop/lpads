@@ -106,8 +106,9 @@
                 var searchAPIURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/(query).json?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw&limit=1";
                 var searchAPIURLNominatim = "https://nominatim.openstreetmap.org/reverse?lat=(lat)&lon=(long)&format=jsonv2&zoom="+nominatim_zoom;
                 var searchAPIURLBing = "https://dev.virtualearth.net/REST/v1/Locations/(query)?o=json&key=AngXT6Kt9tQtmoGORNVnfY-H_W8CSkM2mb13SrDwLZ43mNaKhD5zpupeQX9uxYjo";
-                var lpadURL = "https://www.google.com/maps/preview/lp?authuser=0&hl=en&gl=us&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d(dist)!2d(long)!3d(lat)!2m0!3m2!1i32767!2i32767!4f14!5m2!3b0!5e11"
+                var lpadURL = "https://www.google.com/maps/preview/lp?authuser=0&hl=(LN)&gl=(GL)&pb=!1m3!1s0!7e81!15i60107!2m9!1m3!1d(dist)!2d(long)!3d(lat)!2m0!3m2!1i32767!2i32767!4f14!5m2!3b0!5e11"
                 var overrides = null;
+                var lang = "en", country = "us"
                 var blacklist = [];
                 var placeBlacklist = [];
                 var adParseFunction = null;
@@ -178,6 +179,12 @@
                     if (up.get('osm_zoom') != null) {
                         nominatim_zoom = parseFloat(up.get('osm_zoom'));
                         searchAPIURLNominatim = "https://nominatim.openstreetmap.org/reverse?lat=(lat)&lon=(long)&format=jsonv2&zoom="+nominatim_zoom;
+                    }
+                    if (up.get('lang') != null) {
+                        lang = up.get('lang')
+                    }
+                    if (up.get('locale') != null) {
+                        country = up.get('locale')
                     }
                     try {
                         if (up.get('event') != null) {
@@ -691,7 +698,7 @@
                     mymap.panTo(new L.LatLng(mkpos.lat, mkpos.lng))
                     adRadius = new L.circle(new L.LatLng(mkpos.lat, mkpos.lng), {radius: dist/dist_modifier})	
                     adRadius.addTo(data)                    	
-                    xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", mkpos.lng).replace("(lat)", mkpos.lat)))
+                    xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", mkpos.lng).replace("(lat)", mkpos.lat).replace("(LN)", lang).replace("(GL)", country)))
                     xhr.onreadystatechange = function() {
                         if (this.readyState == 4) {
                             going = false
@@ -729,7 +736,7 @@
                     pins = []
                     adData = null
                     pos = adMarker.getLatLng()
-                    xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", pos.lng).replace("(lat)", pos.lat)))
+                    xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", pos.lng).replace("(lat)", pos.lat).replace("(LN)", lang).replace("(GL)", country)))
                     xhr.onreadystatechange = function() {
                         if (this.readyState == 4) {
                             going = false
@@ -759,7 +766,7 @@
                     adStartFunction()
                 }
 
-                xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", start[1]).replace("(lat)", start[0])))
+                xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", start[1]).replace("(lat)", start[0]).replace("(LN)", lang).replace("(GL)", country)))
                 xhr.onreadystatechange = function() {
                     if (this.readyState == 4) {
                         going = false
@@ -805,7 +812,7 @@
                     pins = []
                     adData = null
                     pos = adMarker.getLatLng()
-                    xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", pos.lng).replace("(lat)", pos.lat)))
+                    xhr.open("GET", selLPUrl(lpadURL.replace("(dist)", dist).replace("(long)", pos.lng).replace("(lat)", pos.lat).replace("(LN)", lang).replace("(GL)", country)))
                     xhr.onreadystatechange = function() {
                         if (this.readyState == 4) {
                             going = false
