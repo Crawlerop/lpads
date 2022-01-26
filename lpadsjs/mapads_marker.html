@@ -535,7 +535,11 @@
                         if (ad.adNotes) {
                         	adTextData += "<br><b>Secret notes: </b>"+ad.adNotes+"<br><br>"
                         } else if (ad.adMarketPlace) {
-                            adTextData += "<br><b><a href=\"javascript:void(do_shop_modal("+fa_id+"))\">View currently sold items</a></b><br><br>"
+                            adTextData += "<br><b><a href=\"javascript:void(do_shop_modal("+fa_id+"))\">View currently sold items</a></b><br>"
+                            if (ad.adMarketPlace.storefront) {
+                                adTextData += "<b><a href=\""+ad.adMarketPlace.storefront+"\">View store's storefront page</a></b><br>"
+                            }
+                            adTextData += "<br>"
                         }
                         adTextData += "Why: <b>"+ad.adWhy+"</b>"
                         adTextData += "<br><br><a href=\""+ad.adLink+"\">"+ad.adSite+"</a>"

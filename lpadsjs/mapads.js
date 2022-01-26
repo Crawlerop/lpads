@@ -28,6 +28,7 @@ var MAPAD_ADSITE_WTA_PROVIDER = MAPAD_ADDATA_LTOOLTIP
 var MAPAD_ADMARKETPLACE = 9
 
 var MAPAD_ADMARKETPLACE_WTA = MAPAD_ADLIST
+var MAPAD_ADMARKETPLACE_WTA_STOREFRONT = MAPAD_ADNAME
 var MAPAD_ADMARKETPLACE_WTA_DATA = MAPAD_ADLOCATION
 var MAPAD_ADMARKETPLACE_WTA_INDEX = MAPAD_ADLIST
 
@@ -313,7 +314,9 @@ function parseAds(lat, lng, mapad, blacklist=[], placeblacklist=[]) {
                 }
                 adMarketPlace = null
                 if (ldata[MAPAD_ADMARKETPLACE] != null && ldata[MAPAD_ADMARKETPLACE] != undefined) {
-                    adMarketPlace = {"why":{},"items":[]}                    
+                    adMarketPlace = {"why":{},"items":[],"storefront":""}                    
+                    adMarketPlace.storefront = ldata[MAPAD_ADMARKETPLACE][MAPAD_ADMARKETPLACE_WTA][MAPAD_ADMARKETPLACE_WTA_STOREFRONT]
+                    if (adMarketPlace.storefront && adMarketPlace.storefront.startsWith("/")) adMarketPlace.storefront = "https://www.google.com"+adMarketPlace.storefront
                     mp_items = ldata[MAPAD_ADMARKETPLACE][MAPAD_ADMARKETPLACE_ITEMS]
                     wta_data = ldata[MAPAD_ADMARKETPLACE][MAPAD_ADMARKETPLACE_WTA][MAPAD_ADMARKETPLACE_WTA_DATA]
                     for (i=0;i<wta_data.length;i++) {
