@@ -99,7 +99,7 @@
                 var start = [40.7127837, -74.00594130000002]
 		// if (wrapper) start = [-27.564444, 151.951944]
                 var addLayer = false;
-                var dist = 15000;
+                var dist = 8000;
                 var dist_modifier = 1;
                 var cors = false;
                 var nominatim_zoom = 17;
@@ -414,7 +414,7 @@
                 var mymap = L.map('mapid', {
                     center: start,
                     zoom: 14,
-                    layers: [normal]
+                    layers: [blank]
                 })
 
                 if (addLayer == true) {
