@@ -580,6 +580,7 @@
 
                 function loadPins(adData) {
                     var fa_index = 0
+                    var not_found = false
                     adData.forEach(function(ad) {
                         lp = ad.adLocation.split(", ")
                         switch (up.get("geocoder")) {                        		
@@ -592,12 +593,17 @@
                         		break
 
                             case "nominatim":
-                            default:
                         		tg = searchAPIURLNominatim.replace("(lat)", lp[0]).replace("(long)", lp[1])
-                        		break                                
+                        		break
+
+                            case "none":
+                            default:
+                                not_found = true
+                                break
                         		
                        	}
                         var atwn = null
+                        if (not_found) atwn = "Geocoding disabled"
                         if (adParseFunction != null) {
                             resp = adParseFunction(JSON.parse(JSON.stringify(ad)))
                             if (resp != null) {
