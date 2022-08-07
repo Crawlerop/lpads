@@ -186,6 +186,12 @@
                     if (up.get('locale') != null) {
                         country = up.get('locale')
                     }
+                    if (up.get('hl') != null) {
+                        lang = up.get('hl')
+                    }
+                    if (up.get('gl') != null) {
+                        country = up.get('gl')
+                    }
                     try {
                         if (up.get('event') != null) {
                             adParseFunction = eval("("+window.atob(up.get('event'))+")")
